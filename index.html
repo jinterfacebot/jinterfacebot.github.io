@@ -142,7 +142,7 @@ function gcookies(){ro={};a=document.cookie.split("; ");for(i in a){ro[a[i].spli
 db=firebase.database();sp=f("mainpack")
 auth=firebase.auth()
 if(gcookies().email){
-    f("mail").value=gcookies().email;
+    f("mail").value=gcookies().email
     f("pass").value=gcookies().pass;login() 
     
 }
