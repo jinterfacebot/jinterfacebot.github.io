@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "jinterfacebot.github.io-1",
+			"path": "..\\jinterfacebot.github.io-1"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}
