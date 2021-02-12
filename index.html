@@ -135,7 +135,11 @@
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 </script>
-<script>
+<script>loc={}
+    if(window.location.origin.startsWith("localhost")){loc.origin="localhost";loc.href=window.location.href}else{
+        loc.origin="https://jnoteit.web.app"
+        loc.href="https://jnoteit.web.app"+window.location.href.slice(window.location.href.search("(?<!:)(?<!\/)\/"))
+    }
 nots=[];
 f=(e)=>{return document.getElementById(e)};cf=(e)=>{return document.getElementsByClassName(e)}
 function gcookies(){ro={};a=document.cookie.split("; ");for(i in a){ro[a[i].split("=")[0]]=a[i].split("=")[1]}return ro}
@@ -187,9 +191,9 @@ function createNote(name,ro){
 
 nn=f("notecopy").cloneNode();nn.textContent=name
 if(ro){
-    nn.link=window.location.origin+"/l#"+sp.n+":"+sn.textContent+":"+nn.textContent
+    nn.link=loc.origin+"/l#"+sp.n+":"+sn.textContent+":"+nn.textContent
 }else{
-nn.link=window.location.origin+"/editor?"+sp.n+":"+sn.textContent+":"+nn.textContent}
+nn.link=loc.origin+"/editor?"+sp.n+":"+sn.textContent+":"+nn.textContent}
 
 nn.onclick=function(){
     
@@ -217,7 +221,7 @@ nn.onclick=function(){
             
             console.log(this.parentElement.offsetTop)
             if(this.parentElement.offsetTop<-80){
-                window.open(this.parentElement.children[1].contentWindow.location.href)
+                window.open(this.parentElement.children[1].contentloc.href)
                 delete editors[this.dest.split(":")[2]];this.parentElement.remove();
             }
             this.style.cursor="grab"
@@ -370,8 +374,8 @@ function not(color,text,imp,click){nnot=document.createElement("div");nnot.style
 
 function init(){
     setTimeout(()=>{
-    if(window.location.href.includes("?")){
-    db.ref("/").set({from:user.uid,get:"sharedPack",destination:window.location.href.split("?")[1]})
+    if(loc.href.includes("?")){
+    db.ref("/").set({from:user.uid,get:"sharedPack",destination:loc.href.split("?")[1]})
 }},400)
 }
 
