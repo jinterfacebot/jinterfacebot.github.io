@@ -1,0 +1,54 @@
+<style>
+input,select,button{
+        cursor:pointer;
+        transform:scale(1,1);
+        transition:all 1s;
+
+    }
+   
+.doc{
+    width:532.591px;
+    margin:auto;
+    height:94%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-shadow:-4px 1px 20px 0px;
+    border-radius:4px;
+    background-color: white;
+}
+.btn{
+    border-radius:20px;border:1px solid rgb(0,162,255); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;float:none;width:fit-content;color:white
+}
+.opt{width:100%;height:5%;background-color: black;}
+::selection{color:rgb(0, 162, 255)}
+::-webkit-scrollbar {width: 10px;margin-right:2px;}::-webkit-scrollbar-track {background: none}:-webkit-scrollbar-thumb {background: #888;border-radius:10px;}:-webkit-scrollbar-thumb:hover {background: rgb(56, 56, 56);border-radius:10px;}
+</style>
+<div class=opt>
+    <div class=btn onclick="window.open('https://api.apiflash.com/v1/urltoimage?access_key=cc956ec057874498bf7603cfdd52c185&url='+window.location.href)">
+        Criar imagem
+        </div>
+
+</div>
+<div class=doc id=doc></div>
+<script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-app.js"></script><script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-database.js"></script><script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-auth.js"></script><!-- Initialize Firebase --><script src="https://jnoteit.web.app/__/firebase/init.js"></script>
+<script>db=firebase.database()
+
+f=(e)=>{return document.getElementById(e)};cf=(e)=>{return document.getElementsByClassName(e)}
+    if(window.location.href.includes("#")){
+        db.ref("/").set({get:"noteView",destination:window.location.href.split("#")[1]})    
+        db.ref("/").on("value",(v)=>{val=v.val()
+            if(val.get=="noteView"&&val.destination==window.location.href.split("#")[1]){
+                f("doc").innerHTML=val.content
+            }})
+    }else{
+    link=window.location.href.split("?")[1];destination=""
+    db.ref("/").set({get:"link",link:link})
+    db.ref("/").on("value",(v)=>{val=v.val()
+    if(val.from=="server"&&val.get=="link"&&link==link){
+        f("doc").innerHTML=val.content
+        destination=val.destination
+    }
+    if(val.from==destination.split(":")[0]&&val.topic==destination.split(":")[1]&&val.name==destination.split(":")[2]){
+        f("doc").innerHTML=val.content
+    }})}
+</script>

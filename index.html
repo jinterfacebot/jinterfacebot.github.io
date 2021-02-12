@@ -1,0 +1,393 @@
+<style>
+    @keyframes in{
+        0%{width:0%;height:0%;border:solid white;border-radius:0px;background-color:transparent;overflow:hidden}
+        50%{height:0%;width:0%;border:solid white;border-radius:0px;overflow:hidden}
+        80%{height:50%;width:10%;border:solid white;border-radius:0px;background-color:rgb(0,162,255);overflow:hidden}
+        100%{};
+    }
+    body{margin:0;padding:0;overflow:hidden}
+    html{background-color:rgb(65, 65, 65)}
+    *{font-family:Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;color:white}
+    .imp{border-radius:50px;border:1px solid rgb(0, 162, 255);animation:in 2s;align-content:center;overflow:hidden;transition:all 500ms}
+    .imp:hover{border-radius:5px;border:1px solid rgb(0, 255, 34)}
+    .packs{
+        width:30%;
+        height:10%;
+        float:left;
+        height:94%;
+        margin-left:10px;
+    }
+    ul{padding:0;margin:0}
+    .notes{width:68%;margin-left:auto;float:left;height:94%;overflow:auto;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+    .snote{cursor:pointer;width:100%;border-bottom:1px solid rgb(0, 162, 255);border-top:1px solid rgb(0, 162, 255);border-right:1px solid rgb(0, 162, 255);height:20%;font-size:34;-moz-box-sizing:border-box; -webkit-box-sizing:border-box; box-sizing:border-box}
+    .snote:hover{background: green;}
+    input{background-color:grey;outline:none;border:1px solid rgb(0,162,255);border-radius:6px;transition:box-shadow 1s}
+    input:focus{box-shadow:0 0px 11px 2px rgb(0 162 255)}
+    button{border:none;outline:none;background-color:rgb(0, 255, 34);border-radius:25px;transition:background-color 1s}
+    button:hover{background-color:rgb(0, 162, 255)}
+    ::selection{color:rgb(0, 162, 255)}
+    @keyframes login {
+        0%{background-image:linear-gradient(to right,rgb(0,162,255),rgb(0, 255, 55));height:0%};
+        100%{background-image:linear-gradient(to right,rgb(0, 255, 55),rgb(0,162,255));height:5%};
+    }
+    @keyframes not{
+        0%{width:0%;border-radius:100px;height:0%}
+        25%{border-radius:400px;}
+        50%{border-radius:300px;}
+        75%{border-radius:200px;}
+        
+    }
+    .spack{
+        border-bottom:1px solid rgb(0, 162, 255);
+        border-top:1px solid rgb(0, 162, 255);
+        border-left:none;
+        border-right:none;
+        -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none
+    }
+    .spack:hover{
+        background-color:gray
+    }
+
+    .login{margin:none;width:100%;height:5%;background-image:linear-gradient(to right,rgb(0, 255, 55),rgb(0,162,255));animation:login 1s}
+    .account{overflow:hidden;float:right;background-color:rgb(0, 255, 85);width:40%;height:100%;border-radius:25px;margin-right:10px;transition:all 1s}
+    .event{height:40%;margin-left:20px;width:60%}
+    .notec{float:right;width:55%;height:70%;overflow-x:hidden;overflow-y:auto;}
+    .notecopy{float:left;height:fit-content;width:fit-content;padding:10px;margin:1px;background-color:rgb(0, 162, 255);}
+    .notecopy:hover{background-color:rgb(0, 255, 34);}
+    ::-webkit-scrollbar {width: 10px;margin-right:2px;}::-webkit-scrollbar-track {background: none}:-webkit-scrollbar-thumb {background: #888;border-radius:10px;}:-webkit-scrollbar-thumb:hover {background: rgb(56, 56, 56);border-radius:10px;}
+    .editor{
+        width:100%;
+        height:90%;
+        border:none;}
+    .holder{
+        position:absolute;
+        top:0;
+        left:0;
+        width:549px;
+        height:646px;
+        user-select: none;
+        overflow:hidden;
+        background:rgba(0, 0, 0, 0.596);
+        resize:both
+    }
+</style>
+
+<div class=login id=loginbar><div class=account id=account style="padding-left:10px">
+    <input id=mail type="email"style="width:20%;margin-top:4%" required>
+
+    <label for=pass>Senha</label>
+    <input id=pass required type="password"style="width:20%;margin-top:2%;margin-right:0%;">
+    <button onclick="login()"id=btnlogin style="width:10%;height:50%">Entrar</button>
+    <button onclick="createAccount()"id=btnlogin style="width:10%;height:50%">Criar conta</button>
+</div></div>
+
+<div class="imp notes"><h1 style="margin-left:2px;align-content:center">Suas anotações [Meu]</h1>
+<div class=imp style="overflow: auto;width:40%;float:left;height:70%;">
+<div class=snote>Outros</div>
+<div class=snote>Hist</div>
+<div class=snote>Port</div>
+<div class=snote>Cie</div>
+<div class=snote>Geo</div>
+<div class=snote>Edf</div>
+<div class=snote>OE</div>
+<div class=snote>Projeto</div>
+<div class=snote>Art</div>
+<div class=snote>Mat</div>
+</div>
+<div class="imp notec"id=notec><h3 id=noteselected>Selecione uma materia para ver suas anotações dela</h3></div></div>
+<ul class="imp packs" id=packs>
+    <h1 style="margin-left:2px;align-content:center">Ficharios</h1><input id=packname style="width:78%;"><button onclick="createPack()" style="width:22%">Criar fichario</button>
+    <div class="imp spack" id=mainpack>meu <p style="background-color: grey; opacity:0.5;margin: 0;float:right;">"Meu" não pode ser deletado</p></div>
+
+</ul>
+
+<div style="display:none;"><div id=notecopy class=notecopy>Date</div>
+<div class=holder id=editorcopy><h1 style="cursor:grab">erro:editor com nome não definido</h1>
+    <iframe class=editor>
+        
+    </iframe>
+</div>
+
+
+</div>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-analytics.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>
+
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig={
+    apiKey: "AIzaSyACmf4HAlitjFHQ7aoBesSkhwTyPNoFb3k",
+    authDomain: "jnoteit.firebaseapp.com",
+    databaseURL: "https://jnoteit-default-rtdb.firebaseio.com",
+    projectId: "jnoteit",
+    storageBucket: "jnoteit.appspot.com",
+    messagingSenderId: "298183827268",
+    appId: "1:298183827268:web:aa74a7cf08dd7bfe480111"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+<script>
+nots=[];
+f=(e)=>{return document.getElementById(e)};cf=(e)=>{return document.getElementsByClassName(e)}
+function gcookies(){ro={};a=document.cookie.split("; ");for(i in a){ro[a[i].split("=")[0]]=a[i].split("=")[1]}return ro}
+db=firebase.database();sp=f("mainpack")
+auth=firebase.auth()
+if(gcookies().email){
+    f("mail").value=gcookies().email;
+    f("pass").value=gcookies().pass;login() 
+    
+}
+sn=null
+editors={}
+notes={}
+user=false
+a=cf("snote");for(b in a){e=a[b]
+e.onclick=function(){
+    
+    if(!sp.readOnly){
+    if(!notes[sp.n][this.textContent]){notes[sp.n][this.textContent]={}}}
+    if(sn){sn.style["background-color"]=""}
+    sn=this;this.style["background-color"]="rgb(0,255,34)"
+    if(sp.readOnly){
+        f("notec").innerHTML="" 
+        if(!saved[sp.n][this.textContent]){
+            saved[sp.n][this.textContent]={}
+        }
+        for(i in saved[sp.n][this.textContent]){
+        createNote(saved[sp.n][this.textContent][i].split(":"),true)
+    }   
+    }else{
+    f("notec").innerHTML='<input placeholder="nome" id=nnotename style="width:35%;float:left"type=search onkeyup="noteSearch(this)"><button id=createnote style="height:5%;width:65%;float:left;margin:auto">Criar anotação</button>'
+    for(i in notes[sp.n][sn.textContent]){
+        createNote(notes[sp.n][sn.textContent][i])
+    }}
+    if(!sp.readOnly){
+    f("createnote").onclick=()=>{
+        if(!notes[sp.n][sn.textContent][f("nnotename").value]){
+        db.ref("/").set({from:user.uid,get:"noteCreate",topic:sn.textContent,pack:sp.n,name:f("nnotename").value})
+      createNote(f("nnotename").value)
+      notes[sp.n][sn.textContent].push(f("nnotename").value)
+    }}}
+    
+
+}
+};
+function createNote(name,ro){
+
+
+
+nn=f("notecopy").cloneNode();nn.textContent=name
+if(ro){
+    nn.link=window.location.origin+"/l#"+sp.n+":"+sn.textContent+":"+nn.textContent
+}else{
+nn.link=window.location.origin+"/editor?"+sp.n+":"+sn.textContent+":"+nn.textContent}
+
+nn.onclick=function(){
+    
+        if(!editors[this.textContent]){
+    editors[this.textContent]=f("editorcopy").cloneNode(true)
+    
+    
+    editors[this.textContent].children[1].src=this.link
+    editors[this.textContent].children[0].textContent=sn.textContent+":"+this.textContent
+    editors[this.textContent].children[0].dest=sp.n+":"+sn.textContent+":"+this.textContent
+    editors[this.textContent].children[0].onmouseover=function(){this.textContent="Clique com o botão direito para fechar"}
+    editors[this.textContent].children[0].onmouseout=function(){this.textContent=this.dest}
+    editors[this.textContent].children[0].oncontextmenu=function(e){if(e.button==2){delete editors[this.dest.split(":")[2]];this.parentElement.remove();return false}}
+    
+    editors[this.textContent].children[0].onmousedown=function(e){
+        x=e.clientX;y=e.clientY
+        document.onmousemove=(e)=>{
+            this.style.cursor="grabbing"
+            this.parentElement.style.top=(this.parentElement.offsetTop-(y-e.clientY))+"px"
+            this.parentElement.style.left=(this.parentElement.offsetLeft-(x-e.clientX))+"px"
+            x=e.clientX;y=e.clientY
+
+        }
+        document.onmouseup=()=>{
+            
+            console.log(this.parentElement.offsetTop)
+            if(this.parentElement.offsetTop<-80){
+                window.open(this.parentElement.children[1].contentWindow.location.href)
+                delete editors[this.dest.split(":")[2]];this.parentElement.remove();
+            }
+            this.style.cursor="grab"
+            document.onmousemove=null
+            document.onmouseup=null
+        }
+    }
+
+    document.body.appendChild(editors[this.textContent])
+
+    
+        }
+}
+f("notec").appendChild(nn).style.display=""
+}
+function noteSearch(e){
+  arr=cf("notecopy");for(a in arr){
+    if(!arr[a].textContent){return}
+    
+    
+      if(arr[a].textContent.includes(e.value)){arr[a].style.display=""}else{arr[a].style.display="none"}}
+}
+
+function loginCheck(){if(!f("mail").checkValidity()){return};if(user){return};auth.signInWithEmailAndPassword(f("mail").value, f("pass").value).then((userCredential) => {user=userCredential.user;init()}).catch((error) => {errorCode=error.code;errorMessage=error.message;console.log(errorMessage);if(errorCode=="auth/user-not-found"){f("btnlogin").textContent="Criar conta"}else{f("btnlogin").textContent="Entrar"}})}
+function login(){if(!f("mail").checkValidity||f("pass").value.length<3){return}firebase.auth().signInWithEmailAndPassword(f("mail").value, f("pass").value).then((userCredential) => {user=userCredential.user;init();f("loginbar").style["background-image"]="none";f("loginbar").style["background-color"]="black";    f("account").style["background-color"]="black";f("account").style["border-radius"]="0px!";f("account").style["font-size"]="24";f("account").style["width"]="fit-content";db.ref("/").set({from:user.uid,get:"home"});document.cookie="pass="+f("pass").value+"; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";f("account").innerHTML=user.email.split("@")[0];document.cookie="email="+user.email+"; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"})}
+function createAccount(){firebase.auth().createUserWithEmailAndPassword(f("mail").value, f("pass").value).then((userCredential) => {user=userCredential.user;init();;f("loginbar").style["background-image"]="none";f("loginbar").style["background-color"]="black";f("account").style["background-color"]="black";f("account").style["border-radius"]="0px";f("account").style["font-size"]="24";f("account").style["width"]="fit-content";db.ref("/").set({from:user.uid,get:"home"});document.cookie="pass="+f("pass").value+"; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";f("account").innerHTML=user.email.split("@")[0];document.cookie="email="+user.email+"; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"})}
+db.ref("/").on("value",(v)=>{val=v.val()
+    if(!user){return}
+if(val.to==user.uid){
+if(val.get=="home"){
+    if(!val.content){return}
+notes=val.content
+packs=Object.keys(notes)
+
+for(i in packs){
+    if(val.shared){
+        if(val.shared.includes(packs[i])){
+            p=true
+        }else{
+            p=false
+        }
+    }else{
+        p=false
+    }
+    
+    if(packs[i]!="meu"){
+        f("packname").value=packs[i]
+        
+        createPack(true,p,true)
+    }
+
+}
+saved=val.saved
+for(i in val.saved){
+    f("packname").value=i.split(":")[1]
+        
+        createPack(true,p,false,i)
+}
+f("packname").value=""
+f("mainpack").n="meu"
+
+}
+if(val.get=="noteCreate"){
+    if(saved.includes(val.from+":"+val.pack)){
+        saved[val.from+":"+val.pack][val.topic].push(val.name)
+    }
+}
+
+}})
+    sp.style.backgroundColor="rgb(0,255,85)"
+f("mainpack").onclick=function(){
+    
+    sp.style.backgroundColor=""
+    sp.children[0].style.display="none"
+    if(sp.children[1]){
+    sp.children[1].style.display="none"}
+
+    sp=this
+    if(this.readOnly){
+
+    }else{
+    if(this.children[0]){
+        this.children[0].style.display=""
+        if(this.children[1]){
+            if(this.children[1].p){
+                window.history.pushState('x', 'x', '/?'+user.uid+":"+this.n)
+            }else{
+                window.history.pushState('x', 'x', '/?unshared')
+            }
+        this.children[1].style.display=""}
+    }else{
+        window.history.pushState('x', 'x', '/')
+    }
+
+}
+this.style.backgroundColor="rgb(0,255,85)"
+    sn.onclick()
+    
+    
+}
+packs=[]
+function createPack(s,p,m,n){
+    
+    if((!packs.includes(f("packname").value)||s)){
+        
+        if(!s){
+        db.ref("/").set({from:user.uid,get:"packCreate",name:f("packname").value})}
+    np=f("mainpack").cloneNode(true);
+    
+    
+    np.id="pack";np.classList.add("imp");np.classList.add("spack");
+    if(m){
+        np.innerHTML=f("packname").value+"<button style='float:right;background-color:red;display:none'>Deletar</button><button style='float:right;display:none'>compartilhar</button>";
+    }else{
+        np.innerHTML=f("packname").value+"[modo de leitura]<button style='float:right;background-color:red;display:none'>Deletar</button><button style='float:right;display:none'>compartilhar</button>";
+    }
+    
+    
+    np.style.backgroundColor="";np.onclick=f("mainpack").onclick;
+    if(m){console.log("mypack")
+    np.n=f("packname").value
+    if(p){
+    np.children[1].textContent="descompartilhar";np.children[1].p=true}else{
+        np.children[1].textContent="compartilhar";np.children[1].p=false
+    }
+    np.children[1].onclick=function(){this.p=!this.p;if(this.p){this.textContent="descompartilhar"
+    this.style.backgroundColor="red"
+    db.ref("/").set({get:"sharePack",pack:this.parentElement.n,from:user.uid})
+
+}else{
+    this.style.backgroundColor=""
+    this.textContent="compartilhar"
+    db.ref("/").set({get:"unsharePack",pack:this.parentElement.n,from:user.uid})
+}
+    }
+}else{
+    np.n=n
+        np.children[0].remove()
+        np.readOnly=true
+        np.children[0].textContent="esquecer"
+        np.children[0].style.backgroundColor="red"
+        np.style.backgroundColor="blue"
+    }
+    f("packs").append(np);
+    if(!s){packs.push(f("packname").value)
+    notes[f("packname").value]={Outros:[],Hist:[],Port:[],Cie:[],Geo:[],Edf:[],OE:[],Projeto:[],Art:[],Mat:[]}}
+
+}}
+function not(color,text,imp,click){nnot=document.createElement("div");nnot.style="animation:not 4s;width:334px;height:66px;position:absolute;bottom:0;right:0;transition:all 1s";nnot.style.backgroundColor=color;nnot.style.opacity="0.4";nnot.style.bottom=nots.length*68+"px";nnot.innerHTML=text;nots.push(document.body.appendChild(nnot));nnot.close=function(){for(i in nots){nots[i].style.bottom=((parseInt(nots[i].style.bottom.slice(0,-2)))-68)+"px"}this.style.right="-334px";setTimeout(()=>{nots.splice(this,1);this.remove()},1000)};nnot.init=function(imp){setTimeout(()=>{this.close()},imp)};nnot.onclick=click;nnot.init(imp)}
+
+function init(){
+    setTimeout(()=>{
+    if(window.location.href.includes("?")){
+    db.ref("/").set({from:user.uid,get:"sharedPack",destination:window.location.href.split("?")[1]})
+}},400)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
