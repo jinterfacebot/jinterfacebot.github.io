@@ -221,7 +221,7 @@ nn.onclick=function(){
             
             console.log(this.parentElement.offsetTop)
             if(this.parentElement.offsetTop<-80){
-                window.open(this.parentElement.children[1].contentWindow.location.href)
+                window.open(this.parentElement.children[1].src)
                 delete editors[this.dest.split(":")[2]];this.parentElement.remove();
             }
             this.style.cursor="grab"
