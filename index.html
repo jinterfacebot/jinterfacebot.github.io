@@ -136,7 +136,7 @@
   firebase.initializeApp(firebaseConfig);
 </script>
 <script>loc={}
-    if(window.location.origin.startsWith("localhost")){loc.origin="localhost";loc.href=window.location.href}else{
+    if(window.location.origin.startsWith("http://localhost")){loc.origin="http://localhost";loc.href=window.location.href}else{
         loc.origin="https://jnoteit.web.app"
         loc.href="https://jnoteit.web.app"+window.location.href.slice(window.location.href.search("(?<!:)(?<!\/)\/"))
     }
