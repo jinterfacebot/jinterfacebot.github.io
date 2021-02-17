@@ -376,10 +376,9 @@ function createPack(s,p,m,n){
 
 }}
 function not(color,text,imp,click){nnot=document.createElement("div");nnot.style="animation:not 4s;width:334px;height:66px;position:absolute;bottom:0;right:0;transition:all 1s";nnot.style.backgroundColor=color;nnot.style.opacity="0.4";nnot.style.bottom=nots.length*68+"px";nnot.innerHTML=text;nots.push(document.body.appendChild(nnot));nnot.close=function(){for(i in nots){nots[i].style.bottom=((parseInt(nots[i].style.bottom.slice(0,-2)))-68)+"px"}this.style.right="-334px";setTimeout(()=>{nots.splice(this,1);this.remove()},1000)};nnot.init=function(imp){setTimeout(()=>{this.close()},imp)};nnot.onclick=click;nnot.init(imp)}
-//IF EXIST D:\enl\backend\bot.js (echo D && node D:\enl\backend\bot.js) ELSE (echo E && node E:\enl\backend\bot.js)
+
 function init(){
-    setInterval(()=>{
-    f("ctx").textContent=window.innerWidth},10)
+    f("ctx")=screen.width
     setTimeout(()=>{
     if(loc.href.includes("?")){
     db.ref("/").set({from:user.uid,get:"sharedPack",destination:loc.href.split("?")[1]})
@@ -401,18 +400,4 @@ function init(){
 
 
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
