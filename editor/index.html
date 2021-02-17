@@ -190,7 +190,7 @@ function copyHTML(){
 le=document.activeElement
 window.addEventListener("blur",(e)=>{
     console.log(e)
-    if(e.path[0].type=="color"||e.path.length==1||e.path[0].tagName=="SELECT"||e.path[0].type=="number"||e.path[0].tagName=="DIV"){
+    if(e.path[0].type!="text"&&(e.path[0].type=="color"||e.path.length==1||e.path[0].tagName=="SELECT"||e.path[0].type=="number"||e.path[0].tagName=="DIV")){
         e.preventDefault();
         cf("editor")[0].focus();
         return false
