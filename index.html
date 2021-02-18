@@ -198,9 +198,11 @@ function createNote(name,ro){
 
 nn=f("notecopy").cloneNode();nn.textContent=name
 if(ro){
-    nn.link=loc.origin+"/l#"+sp.n+":"+sn.textContent+":"+nn.textContent
+    nn.link=loc.git+"/l#"+sp.n+":"+sn.textContent+":"+nn.textContent
+        nn.loc=loc.origin+"/l#"+sp.n+":"+sn.textContent+":"+nn.textContent
 }else{
-nn.link=loc.origin+"/editor?"+sp.n+":"+sn.textContent+":"+nn.textContent}
+nn.link=loc.git+"/editor?"+sp.n+":"+sn.textContent+":"+nn.textContent
+nn.loc=loc.origin+"/editor?"+sp.n+":"+sn.textContent+":"+nn.textContent}
 
 nn.onclick=function(){
     
@@ -228,7 +230,7 @@ nn.onclick=function(){
             
             console.log(this.parentElement.offsetTop)
             if(this.parentElement.offsetTop<-80){
-                window.open(this.parentElement.children[1].src)
+                window.open(this.parentElement.children[1].loc)
                 delete editors[this.dest.split(":")[2]];this.parentElement.remove();
             }
             this.style.cursor="grab"
