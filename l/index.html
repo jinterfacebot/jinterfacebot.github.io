@@ -46,7 +46,7 @@ f=(e)=>{return document.getElementById(e)};cf=(e)=>{return document.getElementsB
         f("doc").innerHTML=val.content
         destination=val.destination
     }
-    if(val.from==destination.split(":")[0]&&val.topic==destination.split(":")[1]&&val.name==destination.split(":")[2]){
+    if(val.from==destination.split(":")[0]&&val.pack==destination.split(":")[1]&&val.topic==destination.split(":")[2]&&val.name==destination.split(":")[3]){
         f("doc").innerHTML=val.content
     }})}
 </script>
