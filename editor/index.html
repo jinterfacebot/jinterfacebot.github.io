@@ -4,13 +4,27 @@
     .tools>*{
         float:left;font-family:Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;color:white;margin:2px;cursor:pointer
     }
+    ::spelling-error{
+        outline:solid red;
+    }
     input,select,button{
         cursor:pointer;
         transform:scale(1,1);
         transition:all 1s;
 
     }
-    
+    .cmenu{
+        background-color: rgb(0, 255, 0);
+        width:0px;
+        height:6px;
+        position:absolute;
+        transition:all 100ms;
+
+    }
+    .cmenu:hover{
+        height:40px;
+        width:200px;
+    }
     body{margin:0;padding:0;background: rgb(51, 51, 51);}
     #size{width:10px}
     #status{width:100px}
@@ -61,15 +75,18 @@ this.onmouseout()
       
       <input id=copyhtml>
       <div onclick="copyHTML()"style="border-radius:20px;border:1px solid rgb(0,162,255); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Copiar html do documento</div>
+      <div onclick="cf('editor')[0].innerHTML+=f('copyhtml').value"style="border-radius:20px;border:1px solid rgb(0,162,255); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Inserir html</div>
       
       
       
 </div>
+
 <div style="display:none">
-
+    
 
 </div>
-<div style="text-align:left"face="Times New Roman"size=4 face=""color="#000000"id=editor class=editor contenteditable="true"></div>
+<div style="text-align:left"face="Times New Roman"size=4 face=""color="#000000"id=editor class=editor contenteditable="true">
+    </div>
 <script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-app.js"></script><script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-database.js"></script><script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-auth.js"></script><!-- Initialize Firebase --><script src="https://jnoteit.web.app/__/firebase/init.js"></script>
 <script>
 req=false
@@ -79,6 +96,7 @@ ctx=document.location.href.split("?")[1].replaceAll("%F3","ó").replaceAll("%EA"
 n=document.location.href.split("?")[1].replaceAll("%F3","ó").replaceAll("%EA","ê").replaceAll("%20"," ").split(":")[2]
     document.execCommand("fontName",true,"Arial")
     f=(e)=>{return document.getElementById(e)};cf=(e)=>{return document.getElementsByClassName(e)}
+    
 function gcookies(){ro={};a=document.cookie.split("; ");for(i in a){ro[a[i].split("=")[0]]=a[i].split("=")[1]}return ro}
 function init(){
 f("size").onmouseout=function(){
@@ -129,11 +147,21 @@ function rgbhex(r,g,b){
         hex=Number(b).toString(16);if(hex.length<2){hex="0"+hex};
         blue=hex
         return red+green+blue}
+
+
+        
 function selection(){
+    
     if(document.getSelection().anchorNode.id!="editor"){
+        
+        
         a=Math.random().toString(36);b=Math.random().toString(36)
         document.getSelection().anchorNode.parentNode.id=a+b
+        f("cmenu").style="width:"+f(a+b).offsetWidth+"px;top:"+(f(a+b).offsetTop+f(a+b).offsetHeight)+"px;left:"+f(a+b).offsetLeft+"px"
+        
+        console.log(f(a+b).childNodes)
         f("align").value="justify"+getComputedStyle(f(a+b)).textAlign.slice(0,1).toUpperCase()+getComputedStyle(f(a+b)).textAlign.slice(1)
+        
         srgb=getComputedStyle(f(a+b)).color.split("(")[1].split(")")[0].split(", ")
         f("color").value="#"+rgbhex(srgb[0],srgb[1],srgb[2])
         f("font").value=getComputedStyle(f(a+b)).fontFamily.replaceAll('"',"")
@@ -151,6 +179,8 @@ function selection(){
     
 }
 }
+f("editor").onmousemove=selection
+f("editor").onkeyup=selection
 f("align").onclick=function(){
 document.execCommand(this.value,false,null)
 }
@@ -196,4 +226,5 @@ window.addEventListener("blur",(e)=>{
         return false
     }
 },true)
+
 </script>

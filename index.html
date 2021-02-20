@@ -113,6 +113,7 @@
     <iframe class=editor>
         
     </iframe>
+    
 </div>
 
 
@@ -222,8 +223,8 @@ nn.onclick=function(){
     editors[this.textContent].children[0].dest=sp.n+":"+sn.textContent+":"+this.textContent
     editors[this.textContent].children[0].onmouseover=function(){this.textContent="Clique com o botão direito para fechar"}
     editors[this.textContent].children[0].onmouseout=function(){this.textContent=this.dest}
-    editors[this.textContent].children[0].oncontextmenu=function(e){if(e.button==2){delete editors[this.dest.split(":")[2]];this.parentElement.remove();return false}}
-    
+    editors[this.textContent].children[0].oncontextmenu=function(e){delete editors[this.dest.split(":")[2]];this.parentElement.remove();return false}
+    editors[this.textContent].children[0].ondblclick=editors[this.textContent].children[0].oncontextmenu
     editors[this.textContent].children[0].onmousedown=function(e){
         x=e.clientX;y=e.clientY
         document.onmousemove=(e)=>{
@@ -314,7 +315,7 @@ f("mainpack").onclick=function(){
     sp.children[0].style.display="none"
     if(sp.children[1]){
     sp.children[1].style.display="none"}
-
+    f("ctx").textContent="Suas anotações ["+this.n+"]"
     sp=this
     if(this.readOnly){
 
@@ -390,8 +391,7 @@ function not(color,text,imp,click){nnot=document.createElement("div");nnot.style
 not("green","v"+version,4000,function(){})
 //IF EXIST D:\enl\backend\bot.js (echo D && node D:\enl\backend\bot.js) ELSE (echo E && node E:\enl\backend\bot.js)
 function init(){
-    setInterval(()=>{
-    f("ctx").textContent=window.innerWidth},10)
+    
     setTimeout(()=>{
     if(loc.href.includes("?")){
     db.ref("/").set({from:user.uid,get:"sharedPack",destination:loc.href.split("?")[1]})
