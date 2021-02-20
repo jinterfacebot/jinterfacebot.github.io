@@ -7,6 +7,7 @@
         100%{};
     }
     body{margin:0;padding:0;overflow:hidden}
+    .site{margin:0;padding:0;overflow:hidden;width:100%;height:100%;}
     html{background-color:rgb(65, 65, 65)}
     *{font-family:Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;color:white}
     .imp{border-radius:50px;border:1px solid rgb(0, 162, 255);animation:in 2s;align-content:center;overflow:hidden;transition:all 500ms}
@@ -82,7 +83,7 @@
         }
     }
 </style>
-
+<div class=site id=site>
 <div class=login id=loginbar><div class=account id=account style="padding-left:10px">
     <input id=mail type="email"style="width:20%;margin-top:4%" required>
 
@@ -127,7 +128,7 @@
 
 
 </div>
-
+</div>
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
 
@@ -263,13 +264,13 @@ nn.onclick=function(){
     editors[this.textContent].children[0].ontouchstart=function(e){e.preventDefault()
         x=e.targetTouches[0].pageX;y=e.targetTouches[0].pageY
         document.ontouchmove=(w)=>{
-            w.preventDefault()
+            
             console.log((this.parentElement.offsetLeft-(x-w.targetTouches[0].pageX)))
-            if((this.parentElement.offsetLeft-(x-w.targetTouches[0].pageX))<window.innerWidth){
+            if(this.parentElement.offsetWidth+((this.parentElement.offsetLeft-(x-w.targetTouches[0].pageX)))<f("site").offsetWidth){
             this.parentElement.style.top=(this.parentElement.offsetTop-(y-w.targetTouches[0].pageY))+"px"
             this.parentElement.style.left=(this.parentElement.offsetLeft-(x-w.targetTouches[0].pageX))+"px"
-            }
-            x=w.targetTouches[0].pageX;y=w.targetTouches[0].pageY;
+            
+            x=w.targetTouches[0].pageX;y=w.targetTouches[0].pageY;}
         }
         document.ontouchend=(w)=>{
             w.preventDefault()
@@ -279,7 +280,7 @@ nn.onclick=function(){
 
     }
 
-    document.body.appendChild(editors[this.textContent])
+    f("site").appendChild(editors[this.textContent])
 
     
         }
@@ -419,7 +420,7 @@ function createPack(s,p,m,n){
     notes[f("packname").value]={Outros:[],Hist:[],Port:[],Cie:[],Geo:[],Edf:[],OE:[],Projeto:[],Art:[],Mat:[]}}
 
 }}
-function not(color,text,imp,click){nnot=document.createElement("div");nnot.style="animation:not 4s;width:334px;height:66px;position:absolute;bottom:0;right:0;transition:all 1s";nnot.style.backgroundColor=color;nnot.style.opacity="0.4";nnot.style.bottom=nots.length*68+"px";nnot.innerHTML=text;nots.push(document.body.appendChild(nnot));nnot.close=function(){for(i in nots){nots[i].style.bottom=((parseInt(nots[i].style.bottom.slice(0,-2)))-68)+"px"}this.style.right="-334px";setTimeout(()=>{nots.splice(this,1);this.remove()},1000)};nnot.init=function(imp){setTimeout(()=>{this.close()},imp)};nnot.onclick=click;nnot.init(imp)}
+function not(color,text,imp,click){nnot=document.createElement("div");nnot.style="animation:not 4s;width:334px;height:66px;position:absolute;bottom:0;right:0;transition:all 1s";nnot.style.backgroundColor=color;nnot.style.opacity="0.4";nnot.style.bottom=nots.length*68+"px";nnot.innerHTML=text;nots.push(f("site").appendChild(nnot));nnot.close=function(){for(i in nots){nots[i].style.bottom=((parseInt(nots[i].style.bottom.slice(0,-2)))-68)+"px"}this.style.right="-334px";setTimeout(()=>{nots.splice(this,1);this.remove()},1000)};nnot.init=function(imp){setTimeout(()=>{this.close()},imp)};nnot.onclick=click;nnot.init(imp)}
 not("green","v"+version,4000,function(){})
 
 
