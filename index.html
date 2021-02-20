@@ -71,6 +71,11 @@
         background:rgba(0, 0, 0, 0.596);
         resize:both
     }
+    .cmenu{
+        position:absolute;
+        display: none;
+        animation: in 1s
+    }
     @media (max-width:810px){
         html{
             background-color: black;
@@ -109,6 +114,10 @@
 </ul>
 
 <div style="display:none;"><div id=notecopy class=notecopy>Date</div>
+<div id=cmenu>
+    <div class=imp id=dn>Deletar</div>
+    <div class=imp id=op>Abrir</div>
+</div>
 <div class=holder id=editorcopy><h1 style="cursor:grab">erro:editor com nome não definido</h1>
     <iframe class=editor>
         
@@ -210,7 +219,11 @@ if(ro){
 }else{
 nn.link=loc.git+"/editor?"+sp.n+":"+sn.textContent+":"+nn.textContent
 nn.loc=loc.origin+"/editor?"+sp.n+":"+sn.textContent+":"+nn.textContent}
+nn.oncontextmenu=function(){
+    nc=f("cmenu").cloneNode(true)
 
+
+}
 nn.onclick=function(){
     
         if(!editors[this.textContent]){
@@ -247,9 +260,10 @@ nn.onclick=function(){
         }
     }
     
-    editors[this.textContent].children[0].ontouchstart=function(e){
+    editors[this.textContent].children[0].ontouchstart=function(e){e.preventDefault()
         x=e.targetTouches[0].pageX;y=e.targetTouches[0].pageY
         document.ontouchmove=(w)=>{
+            w.preventDefault()
             console.log((this.parentElement.offsetLeft-(x-w.targetTouches[0].pageX)))
             if((this.parentElement.offsetLeft-(x-w.targetTouches[0].pageX))<window.innerWidth){
             this.parentElement.style.top=(this.parentElement.offsetTop-(y-w.targetTouches[0].pageY))+"px"
@@ -258,7 +272,7 @@ nn.onclick=function(){
             x=w.targetTouches[0].pageX;y=w.targetTouches[0].pageY;
         }
         document.ontouchend=(w)=>{
-
+            w.preventDefault()
             document.ontouchend=null;
             document.ontouchmove=null
         }
