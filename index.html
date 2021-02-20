@@ -250,13 +250,16 @@ nn.onclick=function(){
     editors[this.textContent].children[0].ontouchstart=function(e){
         x=e.targetTouches[0].pageX;y=e.targetTouches[0].pageY
         document.ontouchmove=(w)=>{
+            console.log((this.parentElement.offsetLeft-(x-w.targetTouches[0].pageX)))
+            if((this.parentElement.offsetLeft-(x-w.targetTouches[0].pageX))<window.innerWidth){
             this.parentElement.style.top=(this.parentElement.offsetTop-(y-w.targetTouches[0].pageY))+"px"
             this.parentElement.style.left=(this.parentElement.offsetLeft-(x-w.targetTouches[0].pageX))+"px"
+            }
             x=w.targetTouches[0].pageX;y=w.targetTouches[0].pageY;
         }
         document.ontouchend=(w)=>{
 
-            documnent.ontouchend=null;
+            document.ontouchend=null;
             document.ontouchmove=null
         }
 
