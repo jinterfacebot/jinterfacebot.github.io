@@ -16,7 +16,7 @@
         height:10%;
         float:left;
         height:94%;
-        margin-left:10px;
+        margin-left:1%;
     }
     ul{padding:0;margin:0}
     .notes{width:68%;margin-left:auto;float:left;height:94%;overflow:auto;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
@@ -71,7 +71,7 @@
         background:rgba(0, 0, 0, 0.596);
         resize:both
     }
-    @media (max-width:500px){
+    @media (max-width:810px){
         html{
             background-color: black;
         }
@@ -389,7 +389,8 @@ function createPack(s,p,m,n){
 }}
 function not(color,text,imp,click){nnot=document.createElement("div");nnot.style="animation:not 4s;width:334px;height:66px;position:absolute;bottom:0;right:0;transition:all 1s";nnot.style.backgroundColor=color;nnot.style.opacity="0.4";nnot.style.bottom=nots.length*68+"px";nnot.innerHTML=text;nots.push(document.body.appendChild(nnot));nnot.close=function(){for(i in nots){nots[i].style.bottom=((parseInt(nots[i].style.bottom.slice(0,-2)))-68)+"px"}this.style.right="-334px";setTimeout(()=>{nots.splice(this,1);this.remove()},1000)};nnot.init=function(imp){setTimeout(()=>{this.close()},imp)};nnot.onclick=click;nnot.init(imp)}
 not("green","v"+version,4000,function(){})
-//IF EXIST D:\enl\backend\bot.js (echo D && node D:\enl\backend\bot.js) ELSE (echo E && node E:\enl\backend\bot.js)
+
+
 function init(){
     
     setTimeout(()=>{
