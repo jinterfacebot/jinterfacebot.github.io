@@ -131,14 +131,16 @@ f("editor").onkeydown=function(e){
         
         
     }
-    if(autoSave){
-    clearTimeout(autoSave)}
-    f("status").textContent="Status:escrevendo..."
-    autoSave=setTimeout(function(){
+    
+}
+
+ldoc=""   
+setInterval(function(){
+    if(ldoc!=cf("editor")[0].innerHTML){
+        ldoc=cf("editor")[0].innerHTML
         f("status").textContent="Status:salvando..."
         req=true
-        db.ref("/").set({from:user.uid,topic:ctx,pack:pack,name:n,get:"noteEdit",content:cf("editor")[0].innerHTML})},3000)
-}   
+        db.ref("/").set({from:user.uid,topic:ctx,pack:pack,name:n,get:"noteEdit",content:cf("editor")[0].innerHTML})}},3000)
 function rgbhex(r,g,b){
     hex=Number(r).toString(16);if(hex.length<2){hex="0"+hex};
         red=hex
@@ -179,7 +181,7 @@ function selection(){
     
 }
 }
-f("editor").onmousemove=selection
+
 f("editor").onkeyup=selection
 f("align").onclick=function(){
 document.execCommand(this.value,false,null)
