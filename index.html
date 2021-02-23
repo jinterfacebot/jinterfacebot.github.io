@@ -254,15 +254,11 @@ nn.onclick=function(){
     editors[this.textContent]=f("editorcopy").cloneNode(true)
     editors[this.textContent].onclick=function(){
         se=this
-        f("sv").style.height=this.offsetHeight+"px"
-        f("sv").style.top=this.offsetTop+"px"
-        f("sv").style.left=this.offsetLeft+this.offsetWidth+"px"
-        f("sh").style.width=this.offsetWidth+"px"
-        f("sh").style.top=this.offsetTop+this.offsetHeight+"px"
-        f("sh").style.left=this.offsetLeft+"px"
+        re()
 
     }
-    
+    se=editors[this.textContent];
+    re()
     
     editors[this.textContent].children[1].src=this.link
     editors[this.textContent].loc=this.loc
@@ -274,7 +270,7 @@ nn.onclick=function(){
     editors[this.textContent].children[0].ondblclick=editors[this.textContent].children[0].oncontextmenu
     editors[this.textContent].children[0].onmousedown=function(e){
         x=e.clientX;y=e.clientY
-        document.onmousemove=(e)=>{
+        document.onmousemove=(e)=>{re()
             this.style.cursor="grabbing"
             this.parentElement.style.top=(this.parentElement.offsetTop-(y-e.clientY))+"px"
             this.parentElement.style.left=(this.parentElement.offsetLeft-(x-e.clientX))+"px"
@@ -296,7 +292,7 @@ nn.onclick=function(){
     
     editors[this.textContent].children[0].ontouchstart=function(e){e.preventDefault()
         x=e.targetTouches[0].pageX;y=e.targetTouches[0].pageY
-        document.ontouchmove=(w)=>{
+        document.ontouchmove=(w)=>{re()
             
             console.log((this.parentElement.offsetLeft-(x-w.targetTouches[0].pageX)))
             if(this.parentElement.offsetWidth+((this.parentElement.offsetLeft-(x-w.targetTouches[0].pageX)))<f("site").offsetWidth){
