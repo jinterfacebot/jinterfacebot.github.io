@@ -60,6 +60,7 @@
     .editor{
         width:100%;
         height:90%;
+        
         border:none;}
     .holder{
         
@@ -83,7 +84,7 @@
             background-color: black;
         }
     }
-    .res{z-index:10;transition:all 1s;position: absolute;top:0;left:0;background-color: rgb(0, 162, 255);}
+    .res{z-index:10;position: absolute;top:0;left:0;background-color: rgb(0, 162, 255);}
     .res:hover{background-color:rgb(0, 255, 34)}
     .sliderh{height:10px;cursor:n-resize}
     .sliderv{width:10px;cursor:e-resize}
@@ -188,7 +189,9 @@ sn=null
 editors={}
 notes={}
 user=false
+cs=false
 function re(){
+    if(!cs)
     f("sv").style.height=se.offsetHeight+"px"
         f("sv").style.top=se.offsetTop+"px"
         f("sv").style.left=se.offsetLeft+se.offsetWidth+"px"
@@ -196,10 +199,11 @@ function re(){
         f("sh").style.top=se.offsetTop+se.offsetHeight+"px"
         f("sh").style.left=se.offsetLeft+"px"
 }
-f("sh").onmousedown=function(w){x=w.clientX;y=w.clientY;document.onmousemove=(e)=>{se.style.height=se.offsetHeight-(y-e.clientY)+"px";x=e.clientX;y=e.clientY;re()};document.onmouseup=(e)=>{document.onmouseup=null;document.onmousemove=null}}
-f("sv").onmousedown=function(w){x=w.clientX;y=w.clientY;document.onmousemove=(e)=>{se.style.width=se.offsetWidth-(x-e.clientX)+"px";x=e.clientX;y=e.clientY;re()};document.onmouseup=(e)=>{document.onmouseup=null;document.onmousemove=null}}
-f("sh").ontouchstart=function(w){x=w.pageX;y=w.pageY;document.ontouchmove=(e)=>{se.style.height=se.offsetHeight-(y-e.pageY)+"px";x=e.pageX;y=e.pageY;re()};document.ontouchend=(e)=>{document.ontouchup=null;document.ontouchmove=null}}
-f("sv").ontouchstart=function(w){x=w.pageX;y=w.pageY;document.ontouchmove=(e)=>{se.style.width=se.offsetWidth-(x-e.pageX)+"px";x=e.pageX;y=e.pageY;re()};document.ontouchend=(e)=>{document.ontouchup=null;document.ontouchmove=null}}
+f("sh").onmousedown=function(w){se.style.pointerEvents="none";cs=true;x=w.clientX;y=w.clientY;document.onmousemove=(e)=>{se.style.height=se.offsetHeight-(y-e.clientY)+"px";x=e.clientX;y=e.clientY;};document.onmouseup=(e)=>{document.onmouseup=null;document.onmousemove=null;cs=false;se.style.pointerEvents="auto"}}
+f("sv").onmousedown=function(w){se.style.pointerEvents="none";cs=true;x=w.clientX;y=w.clientY;document.onmousemove=(e)=>{se.style.width=se.offsetWidth-(x-e.clientX)+"px";x=e.clientX;y=e.clientY;};document.onmouseup=(e)=>{document.onmouseup=null;document.onmousemove=null;cs=false;se.style.pointerEvents="auto"}}
+f("sh").ontouchstart=function(w){se.style.pointerEvents="none";cs=true;x=w.pageX;y=w.pageY;document.ontouchmove=(e)=>{se.style.height=se.offsetHeight-(y-e.pageY)+"px";x=e.pageX;y=e.pageY;};document.ontouchend=(e)=>{document.ontouchup=null;document.ontouchmove=null;cs=false;se.style.pointerEvents="auto"}}
+f("sv").ontouchstart=function(w){se.style.pointerEvents="none";cs=true;x=w.pageX;y=w.pageY;document.ontouchmove=(e)=>{se.style.width=se.offsetWidth-(x-e.pageX)+"px";x=e.pageX;y=e.pageY;};document.ontouchend=(e)=>{document.ontouchup=null;document.ontouchmove=null;cs=false;se.style.pointerEvents="auto"}}
+
 a=cf("snote");for(b in a){e=a[b]
 e.onclick=function(){
     
@@ -248,20 +252,23 @@ nn.oncontextmenu=function(){
 
 }
 se=null
+setInterval(()=>{re()},100)
 nn.onclick=function(){
     
         if(!editors[this.textContent]){
     editors[this.textContent]=f("editorcopy").cloneNode(true)
     editors[this.textContent].onclick=function(){
         se=this
-        re()
+       
 
     }
     se=editors[this.textContent];
-    re()
+ 
     
     editors[this.textContent].children[1].src=this.link
     editors[this.textContent].loc=this.loc
+    
+    
     editors[this.textContent].children[0].textContent=sn.textContent+":"+this.textContent
     editors[this.textContent].children[0].dest=sp.n+":"+sn.textContent+":"+this.textContent
     editors[this.textContent].children[0].onmouseover=function(){this.textContent="Clique com o botão direito para fechar"}
@@ -270,7 +277,7 @@ nn.onclick=function(){
     editors[this.textContent].children[0].ondblclick=editors[this.textContent].children[0].oncontextmenu
     editors[this.textContent].children[0].onmousedown=function(e){
         x=e.clientX;y=e.clientY
-        document.onmousemove=(e)=>{re()
+        document.onmousemove=(e)=>{
             this.style.cursor="grabbing"
             this.parentElement.style.top=(this.parentElement.offsetTop-(y-e.clientY))+"px"
             this.parentElement.style.left=(this.parentElement.offsetLeft-(x-e.clientX))+"px"
@@ -292,7 +299,7 @@ nn.onclick=function(){
     
     editors[this.textContent].children[0].ontouchstart=function(e){e.preventDefault()
         x=e.targetTouches[0].pageX;y=e.targetTouches[0].pageY
-        document.ontouchmove=(w)=>{re()
+        document.ontouchmove=(w)=>{
             
             console.log((this.parentElement.offsetLeft-(x-w.targetTouches[0].pageX)))
             if(this.parentElement.offsetWidth+((this.parentElement.offsetLeft-(x-w.targetTouches[0].pageX)))<f("site").offsetWidth){
