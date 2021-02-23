@@ -62,6 +62,7 @@
         height:90%;
         border:none;}
     .holder{
+        
         position:absolute;
         top:0;
         left:0;
@@ -82,6 +83,14 @@
             background-color: black;
         }
     }
+    .res{z-index:10;transition:all 1s;position: absolute;top:0;left:0;background-color: rgb(0, 162, 255);}
+    .res:hover{background-color:rgb(0, 255, 34)}
+    .sliderh{height:10px;cursor:n-resize}
+    .sliderv{width:10px;cursor:e-resize}
+
+    .sliderh:hover{height:30px;}
+    .sliderv:hover{width:30px;}
+
 </style>
 <div class=site id=site>
 <div class=login id=loginbar><div class=account id=account style="padding-left:10px">
@@ -113,7 +122,8 @@
     <div class="imp spack" id=mainpack>meu <p style="background-color: grey; opacity:0.5;margin: 0;float:right;">"Meu" não pode ser deletado</p></div>
 
 </ul>
-
+<div class="res sliderh" id="sh"></div>
+<div class="res sliderv" id="sv"></div>
 <div style="display:none;"><div id=notecopy class=notecopy>Date</div>
 <div id=cmenu>
     <div class=imp id=dn>Deletar</div>
@@ -178,6 +188,18 @@ sn=null
 editors={}
 notes={}
 user=false
+function re(){
+    f("sv").style.height=se.offsetHeight+"px"
+        f("sv").style.top=se.offsetTop+"px"
+        f("sv").style.left=se.offsetLeft+se.offsetWidth+"px"
+        f("sh").style.width=se.offsetWidth+"px"
+        f("sh").style.top=se.offsetTop+se.offsetHeight+"px"
+        f("sh").style.left=se.offsetLeft+"px"
+}
+f("sh").onmousedown=function(w){x=w.clientX;y=w.clientY;document.onmousemove=(e)=>{se.style.height=se.offsetHeight-(y-e.clientY)+"px";x=e.clientX;y=e.clientY;re()};document.onmouseup=(e)=>{document.onmouseup=null;document.onmousemove=null}}
+f("sv").onmousedown=function(w){x=w.clientX;y=w.clientY;document.onmousemove=(e)=>{se.style.width=se.offsetWidth-(x-e.clientX)+"px";x=e.clientX;y=e.clientY;re()};document.onmouseup=(e)=>{document.onmouseup=null;document.onmousemove=null}}
+f("sh").ontouchstart=function(w){x=w.pageX;y=w.pageY;document.ontouchmove=(e)=>{se.style.height=se.offsetHeight-(y-e.pageY)+"px";x=e.pageX;y=e.pageY;re()};document.ontouchend=(e)=>{document.ontouchup=null;document.ontouchmove=null}}
+f("sv").ontouchstart=function(w){x=w.pageX;y=w.pageY;document.ontouchmove=(e)=>{se.style.width=se.offsetWidth-(x-e.pageX)+"px";x=e.pageX;y=e.pageY;re()};document.ontouchend=(e)=>{document.ontouchup=null;document.ontouchmove=null}}
 a=cf("snote");for(b in a){e=a[b]
 e.onclick=function(){
     
@@ -225,10 +247,21 @@ nn.oncontextmenu=function(){
 
 
 }
+se=null
 nn.onclick=function(){
     
         if(!editors[this.textContent]){
     editors[this.textContent]=f("editorcopy").cloneNode(true)
+    editors[this.textContent].onclick=function(){
+        se=this
+        f("sv").style.height=this.offsetHeight+"px"
+        f("sv").style.top=this.offsetTop+"px"
+        f("sv").style.left=this.offsetLeft+this.offsetWidth+"px"
+        f("sh").style.width=this.offsetWidth+"px"
+        f("sh").style.top=this.offsetTop+this.offsetHeight+"px"
+        f("sh").style.left=this.offsetLeft+"px"
+
+    }
     
     
     editors[this.textContent].children[1].src=this.link
