@@ -201,8 +201,8 @@ function re(){
 }
 f("sh").onmousedown=function(w){se.style.pointerEvents="none";cs=true;x=w.clientX;y=w.clientY;document.onmousemove=(e)=>{se.style.height=se.offsetHeight-(y-e.clientY)+"px";x=e.clientX;y=e.clientY;};document.onmouseup=(e)=>{document.onmouseup=null;document.onmousemove=null;cs=false;se.style.pointerEvents="auto"}}
 f("sv").onmousedown=function(w){se.style.pointerEvents="none";cs=true;x=w.clientX;y=w.clientY;document.onmousemove=(e)=>{se.style.width=se.offsetWidth-(x-e.clientX)+"px";x=e.clientX;y=e.clientY;};document.onmouseup=(e)=>{document.onmouseup=null;document.onmousemove=null;cs=false;se.style.pointerEvents="auto"}}
-f("sh").ontouchstart=function(w){se.style.pointerEvents="none";cs=true;x=w.pageX;y=w.pageY;document.ontouchmove=(e)=>{se.style.height=se.offsetHeight-(y-e.pageY)+"px";x=e.pageX;y=e.pageY;};document.ontouchend=(e)=>{document.ontouchup=null;document.ontouchmove=null;cs=false;se.style.pointerEvents="auto"}}
-f("sv").ontouchstart=function(w){se.style.pointerEvents="none";cs=true;x=w.pageX;y=w.pageY;document.ontouchmove=(e)=>{se.style.width=se.offsetWidth-(x-e.pageX)+"px";x=e.pageX;y=e.pageY;};document.ontouchend=(e)=>{document.ontouchup=null;document.ontouchmove=null;cs=false;se.style.pointerEvents="auto"}}
+f("sh").ontouchstart=function(w){se.style.pointerEvents="none";cs=true;x=w.changedTouches[0].pageX;y=w.changedTouches[0].pageY;document.ontouchmove=(e)=>{se.style.height=se.offsetHeight-(y-e.changedTouches[0].pageY)+"px";x=e.changedTouches[0].pageX;y=e.changedTouches[0].pageY;};document.ontouchend=(e)=>{document.ontouchup=null;document.ontouchmove=null;cs=false;se.style.pointerEvents="auto"}}
+f("sv").ontouchstart=function(w){se.style.pointerEvents="none";cs=true;x=w.changedTouches[0].pageX;y=w.changedTouches[0].pageY;document.ontouchmove=(e)=>{se.style.width=se.offsetWidth-(x-e.changedTouches[0].pageX)+"px";x=e.changedTouches[0].pageX;y=e.changedTouches[0].pageY;};document.ontouchend=(e)=>{document.ontouchup=null;document.ontouchmove=null;cs=false;se.style.pointerEvents="auto"}}
 
 a=cf("snote");for(b in a){e=a[b]
 e.onclick=function(){
@@ -284,7 +284,10 @@ nn.onclick=function(){
             x=e.clientX;y=e.clientY
 
         }
-        document.onmouseup=()=>{
+        document.onmouseup=(w)=>{
+            if(w.clientX<0){
+                this.oncontextmenu()
+            }
             
             console.log(this.parentElement.offsetTop)
             if(this.parentElement.offsetTop<-80){
@@ -309,6 +312,9 @@ nn.onclick=function(){
             x=w.targetTouches[0].pageX;y=w.targetTouches[0].pageY;}
         }
         document.ontouchend=(w)=>{
+            if(w.targetTouches[0].pageX<0){
+                this.oncontextmenu()
+            }
             w.preventDefault()
             document.ontouchend=null;
             document.ontouchmove=null
