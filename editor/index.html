@@ -139,6 +139,8 @@ ldoc=""
 setInterval(function(){
     if(ldoc!=cf("editor")[0].innerHTML){
         f("cmenu").style.display=""
+        console.log(cf("editor")[0].innerHTML)
+        console.log(ldoc)
         ldoc=cf("editor")[0].innerHTML
         f("status").textContent="Status:salvando..."
         req=true
