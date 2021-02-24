@@ -257,6 +257,7 @@ nn.onclick=function(){
     
         if(!editors[this.textContent]){
     editors[this.textContent]=f("editorcopy").cloneNode(true)
+    editors[this.textContent].style.height=(window.innerHeight-20)+"px"
     editors[this.textContent].onclick=function(){
         se=this
        
