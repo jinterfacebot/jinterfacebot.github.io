@@ -15,16 +15,13 @@
     }
     .cmenu{
         background-color: rgb(0, 255, 0);
-        width:0px;
+        width:4px;
         height:6px;
         position:absolute;
         transition:all 100ms;
 
     }
-    .cmenu:hover{
-        height:40px;
-        width:200px;
-    }
+
     body{margin:0;padding:0;background: rgb(51, 51, 51);}
     #size{width:10px}
     #status{width:100px}
@@ -164,8 +161,8 @@ function selection(){
         
         
         a=Math.random().toString(36);b=Math.random().toString(36)
-        document.getSelection().anchorNode.parentNode.id=a+b
-        f("cmenu").style="width:"+document.getSelection().anchorNode.parentElement.offsetWidth+"px;top:"+(document.getSelection().anchorNode.parentElement.offsetTop+document.getSelection().anchorNode.parentElement.offsetHeight)+"px;left:"+document.getSelection().anchorNode.parentElement.offsetLeft+"px"
+        
+        f("cmenu").style="top:"+(document.getSelection().anchorNode.parentElement.offsetTop)+"px;left:"+(cf("editor")[0].offsetLeft-4)+"px;height:"+document.getSelection().anchorNode.parentElement.offsetHeight
         
         console.log(document.getSelection().anchorNode.parentElement.childNodes)
         f("align").value="justify"+getComputedStyle(document.getSelection().anchorNode.parentElement).textAlign.slice(0,1).toUpperCase()+getComputedStyle(document.getSelection().anchorNode.parentElement).textAlign.slice(1)
