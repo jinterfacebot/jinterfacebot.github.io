@@ -1,0 +1,15 @@
+{
+	//wsedw
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "jinterfacebot.github.io",
+			"path": "..\\jinterfacebot.github.io"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}

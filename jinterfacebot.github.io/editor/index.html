@@ -1,0 +1,235 @@
+<style>
+    ::-webkit-scrollbar {width: 10px;margin-right:2px;}::-webkit-scrollbar-track {background: none}::-webkit-scrollbar-thumb {background: rgb(0, 162, 255);border-radius:10px;}:-webkit-scrollbar-thumb:hover {background: rgb(56, 56, 56);border-radius:10px;}
+    .tools{width:100%;height:fit-content;background-color:black;padding:20px;box-sizing: border-box;overflow:hidden;}
+    .tools>*{
+        float:left;font-family:Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;color:white;margin:2px;cursor:pointer
+    }
+    ::spelling-error{
+        outline:solid red;
+    }
+    input,select,button{
+        cursor:pointer;
+        transform:scale(1,1);
+        transition:all 1s;
+
+    }
+    .cmenu{
+        background-color: rgb(0, 255, 0);
+        width:4px;
+        height:6px;
+        position:absolute;
+        transition:all 100ms;
+
+    }
+
+    body{margin:0;padding:0;background: rgb(51, 51, 51);}
+    #size{width:10px}
+    #status{width:100px}
+    #font{font-size:small}
+    input{background-color:rgb(51, 51, 51);outline:none;}
+    select{background-color:rgb(51, 51, 51);outline:none;}
+    .editor{border-radius: 4px;box-shadow:-4px 1px 20px 0px;background-color:white;padding:2px;outline:none;width:532.591px;margin:auto;border:1px solid rgb(0,162,255);height:88%;overflow-x:hidden;overflow-y:auto;}
+    ::selection{background-color: rgb(0, 255, 0);}
+</style>
+
+<div class=tools>
+    <div id=status>Status:carregando</div>
+<input id=size style="width:7%;color:black" onmousewheel="
+
+
+if(window.event.deltaY<0){
+this.value=parseInt(this.value)+1
+}else{
+this.value=parseInt(this.value)-1
+}
+this.onmouseout()
+"type=number value=4 max=8 min=0></input><div style="margin-left:10px" id=fontshow>  Fonte</div><select id=font>
+<option value="Arial">Arial</option>
+<option value="Times New Roman">Times New Roman</option>
+<option value="Verdana">Verdana</option>
+<option value="Helvetica">Helvetica</option>
+<option value="Tahoma">Tahoma</option>
+<option value="Trebuchet MS">Trebuchet MS</option>
+<option value="Georgia">Georgia</option>
+<option value="Garamond">Garamond</option>
+<option value="Courier New">Courier New</option>
+<option value="Brush Script MT">Brush Script MT</option>
+</select>
+  <input type=color id=color>
+  <u onclick="document.execCommand('underline',false,null)" style="border-radius:20px;border:1px solid rgb(0, 255, 0); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Uu</u>
+  <i onclick="document.execCommand('italic',false,null)" style="border-radius:20px;border:1px solid rgb(0, 255, 0); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Ii</i>
+  <b onclick="document.execCommand('bold',false,null)" style="border-radius:20px;border:1px solid rgb(0, 255, 0); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Nn</b>
+  <div onclick="createLink()"style="border-radius:20px;border:1px solid rgb(0,162,255); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Refazer link publico</div>
+      <div onclick="getLink()"style="border-radius:20px;border:1px solid rgb(0,162,255); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Visualizar</div>
+  <label for=align>Justificar texto</label>
+  <select name="alinhar" id=align>
+      <option value="justifyLeft">esquerda</option>
+      <option value="justifyCenter">centro</option>
+      <option value="justifyRight">direita</option>
+      </select>
+      <input id=imglink style="border-radius:20px;border:1px solid rgb(0, 255, 0);" type=url>
+      <div onclick="addImage()" style="border-radius:20px;border:1px solid rgb(0, 255, 0); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Adicionar imagem</div>
+      
+      <input id=copyhtml>
+      <div onclick="copyHTML()"style="border-radius:20px;border:1px solid rgb(0,162,255); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Copiar html do documento</div>
+      <div onclick="cf('editor')[0].innerHTML+=f('copyhtml').value"style="border-radius:20px;border:1px solid rgb(0,162,255); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Inserir html</div>
+      
+      
+      
+</div>
+<div class=cmenu id=cmenu></div>
+
+<div style="display:none">
+    
+
+</div>
+<div style="text-align:left"face="Times New Roman"size=4 face=""color="#000000"id=editor class=editor contenteditable="true">
+    </div>
+<script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-app.js"></script><script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-database.js"></script><script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-auth.js"></script><!-- Initialize Firebase --><script src="https://jnoteit.web.app/__/firebase/init.js"></script>
+<script>
+req=false
+autoSave=0;db=firebase.database()
+pack=document.location.href.split("?")[1].replaceAll("%F3","ó").replaceAll("%EA","ê").replaceAll("%20"," ").split(":")[0]
+ctx=document.location.href.split("?")[1].replaceAll("%F3","ó").replaceAll("%EA","ê").replaceAll("%20"," ").split(":")[1]
+n=document.location.href.split("?")[1].replaceAll("%F3","ó").replaceAll("%EA","ê").replaceAll("%20"," ").split(":")[2]
+    document.execCommand("fontName",true,"Arial")
+    f=(e)=>{return document.getElementById(e)};cf=(e)=>{return document.getElementsByClassName(e)}
+    
+function gcookies(){ro={};a=document.cookie.split("; ");for(i in a){ro[a[i].split("=")[0]]=a[i].split("=")[1]}return ro}
+function init(){
+f("size").onmouseout=function(){
+    document.execCommand("fontSize",false,this.value)
+}
+f("size").onclick=f("size").onmouseout
+f("font").onclick=function(){
+    document.execCommand("fontName",false,this.value)
+}
+f("color").onclick=function(){
+    document.execCommand("foreColor",false,this.value)
+};f("color").onmousemove=f("color").onclick;
+f("color").onmouseout=f("color").onclick;
+f("color").onmouseover=f("color").onclick;
+f("editor").onclick=selection
+f("editor").onkeydown=function(e){
+    console.log(e.key)
+    switch(e.key){
+        case"ArrowUp":{selection();break}
+        case"ArrowDown":{selection();break}
+        case"ArrowLeft":{selection();break}
+        case"ArrowRight":{selection();break}
+        case"Home":{selection();break}
+        case"End":{selection();break}
+        case"PageUp":{selection();break}
+        case"PageDown":{selection();break}
+        case"Backspace":{selection();break}
+        
+    }
+    if(e.key=="Tab"){
+        e.preventDefault()
+        
+        
+    }
+    
+}
+
+ldoc=""   
+setInterval(function(){
+    if(ldoc!=cf("editor")[0].innerHTML){
+        f("cmenu").style.display=""
+        console.log(cf("editor")[0].innerHTML)
+        console.log(ldoc)
+        ldoc=cf("editor")[0].innerHTML
+        f("status").textContent="Status:salvando..."
+        req=true
+        db.ref("/").set({from:user.uid,topic:ctx,pack:pack,name:n,get:"noteEdit",content:cf("editor")[0].innerHTML})
+        }else{f("cmenu").style.display="none"}
+        },3000)
+function rgbhex(r,g,b){
+    hex=Number(r).toString(16);if(hex.length<2){hex="0"+hex};
+        red=hex
+        hex=Number(g).toString(16);if(hex.length<2){hex="0"+hex};
+        green=hex
+        hex=Number(b).toString(16);if(hex.length<2){hex="0"+hex};
+        blue=hex
+        return red+green+blue}
+
+
+        
+function selection(){
+    
+    if(document.getSelection().anchorNode.id!="editor"){
+        
+        
+        a=Math.random().toString(36);b=Math.random().toString(36)
+        
+        f("cmenu").style="top:"+(document.getSelection().anchorNode.parentElement.offsetTop)+"px;left:"+(cf("editor")[0].offsetLeft-4)+"px;height:"+document.getSelection().anchorNode.parentElement.offsetHeight
+        
+        console.log(document.getSelection().anchorNode.parentElement.childNodes)
+        f("align").value="justify"+getComputedStyle(document.getSelection().anchorNode.parentElement).textAlign.slice(0,1).toUpperCase()+getComputedStyle(document.getSelection().anchorNode.parentElement).textAlign.slice(1)
+        
+        srgb=getComputedStyle(document.getSelection().anchorNode.parentElement).color.split("(")[1].split(")")[0].split(", ")
+        f("color").value="#"+rgbhex(srgb[0],srgb[1],srgb[2])
+        f("font").value=getComputedStyle(document.getSelection().anchorNode.parentElement).fontFamily.replaceAll('"',"")
+        switch( parseInt(getComputedStyle(document.getSelection().anchorNode.parentElement).fontSize.slice(0,-2))){
+            case 10:{f("size").value=1;break}
+            case 13:{f("size").value=2;break}
+            case 16:{f("size").value=3;break}
+            case 18:{f("size").value=4;break}
+            case 24:{f("size").value=5;break}
+            case 32:{f("size").value=6;break}
+            case 48:{f("size").value=7;break}
+        }
+        
+        
+    
+}
+}
+
+f("editor").onkeyup=selection
+f("align").onclick=function(){
+document.execCommand(this.value,false,null)
+}
+}
+console.log(ctx)
+firebase.auth().signInWithEmailAndPassword(gcookies().email,gcookies().pass).then((userCredential) => {user = userCredential.user;db.ref('/').set({from:user.uid,pack:pack,get:"noteView",topic:ctx,name:n});
+db.ref('/').on("value",(v)=>{val=v.val();if(!user){return}
+if(val.from==user.uid&&req==false&&val.topic==ctx&&val.name==n){
+    cf("editor")[0].innerHTML=val.content;
+}
+if(req=true){req=false}
+if(val.to==user.uid&&val.status=="ok"&&val.get=="createLink"||val.get=="getLink"){
+    window.open(window.location.origin+"/l?"+val.link,"publicDoc","width=500;height=300")
+}
+    if(val.to==user.uid&&val.status=="ok"){f("status").textContent="Status:salvo"}
+if(val.to!=user.uid||val.get!="noteView"||val.from!="server"||val.topic!=ctx||val.name!=n){return}
+f("editor").innerHTML=val.content
+f("status").textContent="Status:Carregado"
+init()
+})})
+function createLink(){
+db.ref("/").set({from:user.uid,pack:pack,get:"createLink",destination:user.uid+":"+pack+":"+ctx+":"+n})
+}
+function getLink(){
+db.ref("/").set({from:user.uid,pack:pack,get:"getLink",destination:user.uid+":"+pack+":"+ctx+":"+n})
+}
+function addImage(){
+    cf("editor")[0].innerHTML+=`<div style="resize:both;overflow:hidden;float:left"><img style="width:100%;height:100%" src="`+f("imglink").value+`"></img></div>img`
+}
+function copyHTML(){
+    console.log(f("copyhtml"))
+    f("copyhtml").value=cf("editor")[0].innerHTML
+    f("copyhtml").select()
+    document.execCommand("copy")
+    
+}
+le=document.activeElement
+window.addEventListener("blur",(e)=>{
+    console.log(e)
+    if(e.path[0].type!="text"&&(e.path[0].type=="color"||e.path.length==1||e.path[0].tagName=="SELECT"||e.path[0].type=="number"||e.path[0].tagName=="DIV")){
+        e.preventDefault();
+        cf("editor")[0].focus();
+        return false
+    }
+},true)
+
+</script>
