@@ -1,0 +1,42 @@
+<style>
+    ::selection{
+        background-color: white;
+        color:white
+    }
+</style>
+<h1 style="color:white">
+    
+    window.addEventListener("click",function(e){
+        
+        
+        e.path[1].style.transition="all 1000ms";
+        if(!e.path[1].style.transform){
+        e.path[1].style.transform="rotate(0deg)";
+        }
+        
+        function b(e){
+        a=e.path[1].cloneNode(true);
+        a.style.top=Math.random()*800+"px";
+        a.style.left=Math.random()*800+"px";
+        a.style.transition="all 1s";
+        a.style.position="absolute";
+        a=document.body.appendChild(a);
+        a.a=function(){setTimeout(()=>{
+        this.style.top=Math.random()*800+"px";
+        this.style.left=Math.random()*800+"px";
+        },10);
+    
+        setTimeout(()=>{this.remove()},1000);
+    }
+    a.a();
+    }
+    b(e);b(e);b(e);b(e);b(e);
+        
+        
+        })
+        window.addEventListener("keydown",(e)=>{
+            if(e.key=="Enter"){
+                window.location.reload();
+            }
+        })
+</h1>
