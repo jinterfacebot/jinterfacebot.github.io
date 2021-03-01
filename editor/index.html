@@ -155,6 +155,9 @@ function rgbhex(r,g,b){
 
 
         
+        f("editor").onmousewheel=function(){
+            f("cmenu").style="top:"+(document.getSelection().anchorNode.parentElement.offsetTop-cf("editor")[0].scrollTop)+"px;left:"+(cf("editor")[0].offsetLeft-4)+"px;height:"+document.getSelection().anchorNode.parentElement.offsetHeight
+        }
 function selection(){
     
     if(document.getSelection().anchorNode.id!="editor"){
