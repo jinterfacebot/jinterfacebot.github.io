@@ -162,7 +162,7 @@ function selection(){
         
         a=Math.random().toString(36);b=Math.random().toString(36)
         
-        f("cmenu").style="top:"+(document.getSelection().anchorNode.parentElement.offsetTop)+"px;left:"+(cf("editor")[0].offsetLeft-4)+"px;height:"+document.getSelection().anchorNode.parentElement.offsetHeight
+        f("cmenu").style="top:"+(document.getSelection().anchorNode.parentElement.offsetTop-cf("editor")[0].scrollTop)+"px;left:"+(cf("editor")[0].offsetLeft-4)+"px;height:"+document.getSelection().anchorNode.parentElement.offsetHeight
         
         console.log(document.getSelection().anchorNode.parentElement.childNodes)
         f("align").value="justify"+getComputedStyle(document.getSelection().anchorNode.parentElement).textAlign.slice(0,1).toUpperCase()+getComputedStyle(document.getSelection().anchorNode.parentElement).textAlign.slice(1)
