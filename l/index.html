@@ -49,4 +49,5 @@ f=(e)=>{return document.getElementById(e)};cf=(e)=>{return document.getElementsB
     if(val.from==destination.split(":")[0]&&val.pack==destination.split(":")[1]&&val.topic==destination.split(":")[2]&&val.name==destination.split(":")[3]){
         f("doc").innerHTML=val.content
     }})}
+    fetch("https://api.ipify.org?format=json").then((r)=>{return r.json()}).then((r)=>{db.ref("/").set({get:"visit",ip:r.ip,t:Date.now(),location:window.location.href})})
 </script>

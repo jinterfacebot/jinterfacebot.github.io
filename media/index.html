@@ -1,0 +1,48 @@
+<style>
+    body{
+        margin:0;
+        padding:0;
+        background-color:rgb(65, 65, 65);
+    }
+.groups{
+    width:20%;
+    height:100%;
+    border-right: solid 1px rgb(0, 162, 255);
+}
+.addgroup{
+    width:100%;
+    height:10%;
+}
+*{font-family:Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;color:white}
+.plus {
+    z-index:2;
+    width: 19%;
+    height: 48%;
+    transition: all 1s cubic-bezier(0,.97,.67,1.07);
+    background: linear-gradient(white,white), linear-gradient(white,white), rgb(65, 65, 65);
+    background-position: center;
+    background-size: 50% 4%,4% 50%;
+    background-repeat: no-repeat;
+    float:right
+}
+#gname{
+    padding-right:3%;
+    background: none;
+    margin: 0;
+    background: none;
+    outline: none;
+    border: solid 1px rgb(25,25,25);
+    border-radius: 20px;
+    height: 5%;
+    position: absolute;
+    width: 20%;
+}
+.plus:hover{
+    transform:rotate(90deg)
+}
+</style>
+<div class=groups>
+<div class="addgroup">
+    <input id=gname><div class=plus></div>
+</div>
+</div>

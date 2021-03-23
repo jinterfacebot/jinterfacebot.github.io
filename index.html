@@ -110,16 +110,21 @@
     #dn:focus{
         background-color: rgb(65, 65, 65);
     }
-
+    
 </style>
-<div class=site id=site>
-<div class=login id=loginbar><div class=account id=account style="padding-left:10px">
-    <input id=mail type="email"style="width:20%;margin-top:4%" required>
+<div class=site id=site você=hacker kkk>
+<div class=login id=loginbar><div class="account" id="account" style="padding-left:10px;background-color: black;width: 504px;">
+    <label for="mail" style="
+   width: 1%;
+">E-mail
+   </label>
+   <input id="mail" type="email" style="width: 19%;background-color: rgb(0 0 0);height: 93%;" required="" placeholder="email@example">
 
-    <label for=pass>Senha</label>
-    <input id=pass required type="password"style="width:20%;margin-top:2%;margin-right:0%;">
-    <button onclick="login()"id=btnlogin style="width:10%;height:50%">Entrar</button>
-    <button onclick="createAccount()"id=btnlogin style="width:10%;height:50%">Criar conta</button>
+   <label for="pass">Senha</label>
+   
+   <input id="pass" required="" type="password" style="width: 29%;margin-right:0%;background-color: rgb(0 0 0);height: 89%;margin-top: 0.4%;">
+   <button onclick="login()" id="btnlogin" style="width:10%;height: 67%;border: 1px solid rgb(0 158 255);float: none;">Entrar</button>
+   <button onclick="createAccount()" id="btnlogin" style="width: 17%;height: 67%;border: 1px solid rgb(0 158 255);margin-top: 0px;float: none;">Criar conta</button>
 </div></div>
 
 <div class="imp notes"><h1 style="margin-left:2px;align-content:center" id=ctx>Suas anotações [Meu]</h1>
@@ -159,18 +164,22 @@
 
 </div>
 </div>
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+<!--Ese site não pode ser hackeado, tecnologias avançadas não te deixam. tente hackear ele!!!!!!!!
 
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
+E
+
+
+
+
+-->
+<script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
      <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-analytics.js"></script>
      <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js"></script>
      <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>
 
 
 <script>
-  // Your web app's Firebase configuration
+
   var firebaseConfig={
     apiKey: "AIzaSyACmf4HAlitjFHQ7aoBesSkhwTyPNoFb3k",
     authDomain: "jnoteit.firebaseapp.com",
@@ -180,7 +189,7 @@
     messagingSenderId: "298183827268",
     appId: "1:298183827268:web:aa74a7cf08dd7bfe480111"
   };
-  // Initialize Firebase
+ 
   firebase.initializeApp(firebaseConfig);
 </script>
 <script>loc={}
@@ -196,6 +205,7 @@
     }
 nots=[];
 f=(e)=>{return document.getElementById(e)};cf=(e)=>{return document.getElementsByClassName(e)}
+
 f("packname").onkeydown=function(e){
         if(e.key==" "){
             e.preventDefault();not("red","Espaços não podem ser usados no nome de notas ou ficharios",5000,function(){})
@@ -208,6 +218,8 @@ if(gcookies().email){
     f("mail").value=gcookies().email
     f("pass").value=gcookies().pass;login() 
     
+}else{
+    fetch("https://api.ipify.org?format=json").then((r)=>{return r.json()}).then((r)=>{db.ref("/").set({get:"visit",ip:r.ip,t:Date.now(),location:window.location.href})})
 }
 sn=null
 editors={}
@@ -267,6 +279,10 @@ e.onclick=function(){
 
 }
 };
+
+function closecmn(){
+    f("cmenu").remove();
+}
 function createNote(name,ro){
 
 
@@ -284,6 +300,17 @@ nn.oncontextmenu=function(){
 
 }
 se=null
+nn.oncontextmenu=function(e){
+    cmn=f("cmenu").cloneNode(true)
+    cmn.style.top=e.clientY-cmn.offsetHeight+"px"
+    cmn.style.left=e.clientX-cmn.offsetWidth+"px"
+    f("site").appendChild("cmenu")
+    document.addEventListener("click",closecmn)
+    
+    return false;
+}
+
+
 setInterval(()=>{re()},100)
 nn.onclick=function(){
     
@@ -384,6 +411,12 @@ function ae(e){
 function login(){if(!f("mail").checkValidity||f("pass").value.length<3){return}firebase.auth().signInWithEmailAndPassword(f("mail").value, f("pass").value).then((userCredential) => {user=userCredential.user;db.ref("/").set({from:user.uid,get:"home"});document.cookie="pass="+f("pass").value+"; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/;sameSite=None; Secure";document.cookie="email="+user.email+"; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/;sameSite=None; Secure";init()}).catch((e)=>{console.log(e.code);ae(e)})}
 function createAccount(){firebase.auth().createUserWithEmailAndPassword(f("mail").value, f("pass").value).then((userCredential) => {user=userCredential.user;db.ref("/").set({from:user.uid,get:"home"});document.cookie="pass="+f("pass").value+"; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/;sameSite=None; Secure";document.cookie="email="+user.email+"; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/;sameSite=None; Secure";init()}).catch((e)=>{console.log(e.code);ae(e)})}
 db.ref("/").on("value",(v)=>{val=v.val()
+    console.log(val,anom)
+    if(val.anom==anom&&val.from=="server"){
+    if(val.get=="sharedPack"){
+     createPack(true,true,false,val.destination.split(":")[1])
+    }
+}
     if(!user){return}
 if(val.to==user.uid){
 if(val.get=="home"){
@@ -425,6 +458,7 @@ if(val.get=="noteCreate"){
     }
 }
 
+
 }})
     sp.style.backgroundColor="rgb(0,255,85)"
 f("mainpack").onclick=function(){
@@ -459,7 +493,8 @@ this.style.backgroundColor="rgb(0,255,85)"
 }
 packs=[]
 function createPack(s,p,m,n){
-    
+    //s - (created by user or code); p - public;m = owned by user;n=name
+    //Ignora isso ok toda vez que eu venho aqui eu fico confuso 
     if((!packs.includes(f("packname").value)||s)){
         
         if(!s){
@@ -476,7 +511,7 @@ function createPack(s,p,m,n){
     
     
     np.style.backgroundColor="";np.onclick=f("mainpack").onclick;
-    if(m){console.log("mypack")
+    if(m){
     np.n=f("packname").value
     if(p){
     np.children[1].textContent="descompartilhar";np.children[1].p=true}else{
@@ -507,9 +542,13 @@ function createPack(s,p,m,n){
 }}
 function not(color,text,imp,click){nnot=document.createElement("div");nnot.style="animation:not 4s;width:334px;height:66px;position:absolute;bottom:0;right:0;transition:all 1s";nnot.style.backgroundColor=color;nnot.style.opacity="0.4";nnot.style.bottom=nots.length*68+"px";nnot.innerHTML=text;nots.push(f("site").appendChild(nnot));nnot.close=function(){for(i in nots){nots[i].style.bottom=((parseInt(nots[i].style.bottom.slice(0,-2)))-68)+"px"}this.style.right="-334px";setTimeout(()=>{nots.splice(this,1);this.remove()},1000)};nnot.init=function(imp){setTimeout(()=>{this.close()},imp)};nnot.onclick=click;nnot.init(imp)}
 not("green","v"+version,4000,function(){})
-
-
+anom=Math.random().toString(36)
+setTimeout(()=>{
+    if(loc.href.includes("?")){
+    db.ref("/").set({anom,get:"sharedPack",destination:loc.href.split("?")[1]})
+}},400)
 function init(){
+    fetch("https://api.ipify.org?format=json").then((r)=>{return r.json()}).then((r)=>{db.ref("/").set({get:"visit",ip:r.ip,t:Date.now(),location:window.location.href})})
     f("loginbar").style="background-image:none;background-color:black";
     f("account").innerHTML="<input id=dn value='"+user.displayName+"'>"
     f("dn").style="width:100%;height:100%;font-size:53px;text-align:center"
@@ -520,10 +559,7 @@ function init(){
         user.updateProfile({displayName:this.value})
     }
     
-    setTimeout(()=>{
-    if(loc.href.includes("?")){
-    db.ref("/").set({from:user.uid,get:"sharedPack",destination:loc.href.split("?")[1]})
-}},400)
+    
 }
 
 
@@ -533,7 +569,7 @@ function init(){
 
 
 
-
+//Habilidade: decifrar códigos
 
 
 
