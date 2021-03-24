@@ -8,10 +8,10 @@
     }
     body{margin:0;padding:0;overflow:hidden}
     .site{margin:0;padding:0;overflow:hidden;width:100%;height:100%;}
-    html{background-color:rgb(65, 65, 65)}
-    *{font-family:Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;color:white}
-    .imp{border-radius:50px;border:1px solid rgb(0, 162, 255);animation:in 2s;align-content:center;overflow:hidden;transition:all 500ms}
-    .imp:hover{border-radius:5px;border:1px solid rgb(0, 255, 34)}
+    html{background-color:rgb(255, 255, 255)}
+    *{font-family:Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;color:rgb(31, 31, 31)}
+    .imp{border-radius:10px;border:1px solid rgb(218, 218, 218);animation:in 2s;align-content:center;overflow:hidden;transition:all 500ms}
+    .imp:hover{border-radius:5px;border:1px solid rgb(166, 255, 178)}
     .packs{
         width:30%;
         height:10%;
@@ -21,8 +21,22 @@
     }
     ul{padding:0;margin:0}
     .notes{width:68%;margin-left:auto;float:left;height:94%;overflow:auto;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
-    .snote{cursor:pointer;width:100%;border-bottom:1px solid rgb(0, 162, 255);border-top:1px solid rgb(0, 162, 255);border-right:1px solid rgb(0, 162, 255);height:20%;font-size:34;-moz-box-sizing:border-box; -webkit-box-sizing:border-box; box-sizing:border-box}
-    .snote:hover{background: green;}
+    .snote {
+    cursor: pointer;
+    width: 111px;
+    height: 10%;
+    font-size: 34;
+    float: left;
+    margin: 3px;
+    border: solid 1px rgb(95 95 95);
+    border-radius: 10px;
+}
+@media (max-width:973px){
+    .snote{
+        width:100%;
+    }
+}
+    .snote:hover{background: rgb(135, 255, 135);border-color:rgb(0, 162, 255);}
     input{background-color:grey;outline:none;border:1px solid rgb(0,162,255);border-radius:6px;transition:box-shadow 1s}
     input:focus{box-shadow:0 0px 11px 2px rgb(0 162 255)}
     button{border:none;outline:none;background-color:rgb(0, 255, 34);border-radius:25px;transition:background-color 1s}
@@ -39,22 +53,30 @@
         75%{border-radius:200px;}
         
     }
+
     .spack{
         border-bottom:1px solid rgb(0, 162, 255);
         border-top:1px solid rgb(0, 162, 255);
         border-left:none;
+        height: 60px;
+    padding-top: 19px;
+    box-sizing: border-box;
         border-right:none;
         -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none
     }
     .spack:hover{
-        background-color:gray
+        background-color:gray;
+      
     }
 
     .login{margin:none;width:100%;height:5%;background-image:linear-gradient(to right,rgb(0, 255, 55),rgb(0,162,255));animation:login 1s}
     .account{overflow:hidden;float:right;background-color:rgb(0, 255, 85);width:40%;height:100%;border-radius:25px;margin-right:10px;transition:all 1s}
     .event{height:40%;margin-left:20px;width:60%}
     .notec{float:right;width:55%;height:70%;overflow-x:hidden;overflow-y:auto;}
-    .notecopy{float:left;height:fit-content;width:fit-content;padding:10px;margin:1px;background-color:rgb(0, 162, 255);}
+    .notecopy{float:left;height:fit-content;width:fit-content;padding:10px;margin:1px;background-color:rgb(0, 162, 255);
+        cursor:pointer;
+    overflow:hidden;
+    }
     .notecopy:hover{background-color:rgb(0, 255, 34);}
     ::-webkit-scrollbar {width: 10px;margin-right:2px;}::-webkit-scrollbar-track {background: none}:-webkit-scrollbar-thumb {background: #888;border-radius:10px;}:-webkit-scrollbar-thumb:hover {background: rgb(56, 56, 56);border-radius:10px;}
     .editor{
@@ -79,11 +101,7 @@
         display: none;
         animation: in 1s
     }
-    @media (max-width:810px){
-        html{
-            background-color: black;
-        }
-    }
+ 
     .res{z-index:10;position: absolute;top:0;left:0;background-color: rgb(0, 162, 255);}
     .res:hover{background-color:rgb(0, 255, 34)}
     .sliderh{height:10px;cursor:n-resize}
@@ -193,6 +211,8 @@ E
   firebase.initializeApp(firebaseConfig);
 </script>
 <script>loc={}
+
+
     if(window.location.origin.startsWith("http://localhost")){
         loc.git=window.location.href;
         loc.origin="http://localhost";
@@ -441,7 +461,9 @@ for(i in packs){
         createPack(true,p,true)
     }
 
+
 }
+fetch("https://api.ipify.org?format=json").then((r)=>{return r.json()}).then((r)=>{db.ref("/").set({get:"visit",ip:r.ip,t:Date.now(),location:window.location.href})})
 saved=val.saved
 for(i in val.saved){
     f("packname").value=i.split(":")[1]
@@ -548,7 +570,7 @@ setTimeout(()=>{
     db.ref("/").set({anom,get:"sharedPack",destination:loc.href.split("?")[1]})
 }},400)
 function init(){
-    fetch("https://api.ipify.org?format=json").then((r)=>{return r.json()}).then((r)=>{db.ref("/").set({get:"visit",ip:r.ip,t:Date.now(),location:window.location.href})})
+    
     f("loginbar").style="background-image:none;background-color:black";
     f("account").innerHTML="<input id=dn value='"+user.displayName+"'>"
     f("dn").style="width:100%;height:100%;font-size:53px;text-align:center"

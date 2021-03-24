@@ -196,23 +196,28 @@ document.execCommand(this.value,false,null)
 console.log(ctx)
 firebase.auth().signInWithEmailAndPassword(gcookies().email,gcookies().pass).then((userCredential) => {user = userCredential.user;db.ref('/').set({from:user.uid,pack:pack,get:"noteView",topic:ctx,name:n});
 db.ref('/').on("value",(v)=>{val=v.val();if(!user){return}
-if(val.from==user.uid&&req==false&&val.topic==ctx&&val.name==n){
+if(val.from==user.uid&&req==false&&val.topic==ctx&&val.name==n&&val.pack==pack){
     cf("editor")[0].innerHTML=val.content;
 }
-if(req=true){req=false}
+
 if(val.to==user.uid&&val.status=="ok"&&val.get=="createLink"||val.get=="getLink"){
-    window.open(window.location.origin+"/l?"+val.link,"publicDoc","width=500;height=300")
+    if(req){
+    window.open(window.location.origin+"/l?"+val.link,"publicDoc","width=500;height=300")}
 }
     if(val.to==user.uid&&val.status=="ok"){f("status").textContent="Status:salvo"}
 if(val.to!=user.uid||val.get!="noteView"||val.from!="server"||val.topic!=ctx||val.name!=n){return}
 f("editor").innerHTML=val.content
 f("status").textContent="Status:Carregado"
 init()
+
+if(req=true){req=false}
 })})
 function createLink(){
+    req=true
 db.ref("/").set({from:user.uid,pack:pack,get:"createLink",destination:user.uid+":"+pack+":"+ctx+":"+n})
 }
 function getLink(){
+    req=true
 db.ref("/").set({from:user.uid,pack:pack,get:"getLink",destination:user.uid+":"+pack+":"+ctx+":"+n})
 }
 function addImage(){
