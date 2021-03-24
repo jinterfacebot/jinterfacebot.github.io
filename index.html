@@ -7,20 +7,25 @@
         100%{};
     }
     body{margin:0;padding:0;overflow:hidden}
-    .site{margin:0;padding:0;overflow:hidden;width:100%;height:100%;}
+    .site{
+        background-color: rgb(65, 65, 65);
+        margin:0;padding:0;overflow:hidden;width:100%;height:100%;}
     html{background-color:rgb(255, 255, 255)}
     *{font-family:Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;color:rgb(31, 31, 31)}
-    .imp{border-radius:10px;border:1px solid rgb(218, 218, 218);animation:in 2s;align-content:center;overflow:hidden;transition:all 500ms}
-    .imp:hover{border-radius:5px;border:1px solid rgb(166, 255, 178)}
+    .imp{border-radius:10px;border:1px solid #dadce0;animation:in 2s;align-content:center;overflow:hidden;transition:all 500ms}
+    .imp:hover{border-radius:5px;border:1px solid rgb(72, 255, 96)}
     .packs{
-        width:30%;
+        margin-right:auto;
+        background-color: rgb(255, 255, 255);
+        margin-top:1%;
+        width:28.6%;
         height:10%;
         float:left;
         height:94%;
         margin-left:1%;
     }
     ul{padding:0;margin:0}
-    .notes{width:68%;margin-left:auto;float:left;height:94%;overflow:auto;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+    .notes{background-color: rgb(255, 255, 255);width:68%;margin-left:1%;margin-top:1%;float:left;height:94%;overflow:auto;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
     .snote {
     cursor: pointer;
     width: 111px;
@@ -55,13 +60,16 @@
     }
 
     .spack{
-        border-bottom:1px solid rgb(0, 162, 255);
-        border-top:1px solid rgb(0, 162, 255);
-        border-left:none;
+        cursor:pointer;
+        margin:10px;
+        width:90%;
+        
+        border:1px solid rgb(0, 162, 255);
+        
         height: 60px;
     padding-top: 19px;
     box-sizing: border-box;
-        border-right:none;
+        
         -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none
     }
     .spack:hover{

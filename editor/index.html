@@ -1,9 +1,13 @@
 <style>
     ::-webkit-scrollbar {width: 10px;margin-right:2px;}::-webkit-scrollbar-track {background: none}::-webkit-scrollbar-thumb {background: rgb(0, 162, 255);border-radius:10px;}:-webkit-scrollbar-thumb:hover {background: rgb(56, 56, 56);border-radius:10px;}
-    .tools{width:100%;height:fit-content;background-color:black;padding:20px;box-sizing: border-box;overflow:hidden;}
+    .tools{width:100%;height:fit-content;background-color:rgb(206, 206, 206);padding:20px;box-sizing: border-box;overflow:hidden;z-index:10}
     .tools>*{
-        float:left;font-family:Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;color:white;margin:2px;cursor:pointer
+        float:left;font-family:Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;color:rgb(51, 51, 51);margin:2px;cursor:pointer;
+        background-color:rgb(206, 206, 206);
+        outline:none;
+        
     }
+  
     ::spelling-error{
         outline:solid red;
     }
@@ -11,6 +15,8 @@
         cursor:pointer;
         transform:scale(1,1);
         transition:all 1s;
+        border:1px solid rgb(134, 134, 134);
+        border-radius:10px;
 
     }
     .cmenu{
@@ -22,13 +28,14 @@
 
     }
 
-    body{margin:0;padding:0;background: rgb(51, 51, 51);}
+    body{margin-top:2%;margin-left:1%;margin-right:1%;margin-bottom:0;padding:0;background: rgb(255, 255, 255);overflow: hidden;}
+    html{background-color: gray;}
     #size{width:10px}
     #status{width:100px}
     #font{font-size:small}
     input{background-color:rgb(51, 51, 51);outline:none;}
     select{background-color:rgb(51, 51, 51);outline:none;}
-    .editor{border-radius: 4px;box-shadow:-4px 1px 20px 0px;background-color:white;padding:2px;outline:none;width:532.591px;margin:auto;border:1px solid rgb(0,162,255);height:88%;overflow-x:hidden;overflow-y:auto;}
+    .editor{border-radius: 4px;box-shadow:-2px 9px 20px 0px;background-color:white;padding:2px;outline:none;width:532.591px;margin:auto;border:1px solid rgb(134, 134, 134);height:88%;overflow-x:hidden;overflow-y:auto;}
     ::selection{background-color: rgb(0, 255, 0);}
 </style>
 
@@ -111,7 +118,7 @@ f("color").onmouseout=f("color").onclick;
 f("color").onmouseover=f("color").onclick;
 f("editor").onclick=selection
 f("editor").onkeydown=function(e){
-    console.log(e.key)
+    
     switch(e.key){
         case"ArrowUp":{selection();break}
         case"ArrowDown":{selection();break}
@@ -136,8 +143,7 @@ ldoc=""
 setInterval(function(){
     if(ldoc!=cf("editor")[0].innerHTML){
         f("cmenu").style.display=""
-        console.log(cf("editor")[0].innerHTML)
-        console.log(ldoc)
+        
         ldoc=cf("editor")[0].innerHTML
         f("status").textContent="Status:salvando..."
         req=true
@@ -158,16 +164,18 @@ function rgbhex(r,g,b){
         f("editor").onmousewheel=function(){
             f("cmenu").style="top:"+(document.getSelection().anchorNode.parentElement.offsetTop-cf("editor")[0].scrollTop)+"px;left:"+(cf("editor")[0].offsetLeft-4)+"px;height:"+document.getSelection().anchorNode.parentElement.offsetHeight
         }
-function selection(){
+function selection(e){
     
     if(document.getSelection().anchorNode.id!="editor"){
         
         
         a=Math.random().toString(36);b=Math.random().toString(36)
+        if(e.path.includes(cf("editor")[0])){
+         
+        sel=document.getSelection().getRangeAt(0);
+        }
         
-        f("cmenu").style="top:"+(document.getSelection().anchorNode.parentElement.offsetTop-cf("editor")[0].scrollTop)+"px;left:"+(cf("editor")[0].offsetLeft-4)+"px;height:"+document.getSelection().anchorNode.parentElement.offsetHeight
         
-        console.log(document.getSelection().anchorNode.parentElement.childNodes)
         f("align").value="justify"+getComputedStyle(document.getSelection().anchorNode.parentElement).textAlign.slice(0,1).toUpperCase()+getComputedStyle(document.getSelection().anchorNode.parentElement).textAlign.slice(1)
         
         srgb=getComputedStyle(document.getSelection().anchorNode.parentElement).color.split("(")[1].split(")")[0].split(", ")
@@ -193,7 +201,7 @@ f("align").onclick=function(){
 document.execCommand(this.value,false,null)
 }
 }
-console.log(ctx)
+
 firebase.auth().signInWithEmailAndPassword(gcookies().email,gcookies().pass).then((userCredential) => {user = userCredential.user;db.ref('/').set({from:user.uid,pack:pack,get:"noteView",topic:ctx,name:n});
 db.ref('/').on("value",(v)=>{val=v.val();if(!user){return}
 if(val.from==user.uid&&req==false&&val.topic==ctx&&val.name==n&&val.pack==pack){
@@ -224,20 +232,54 @@ function addImage(){
     cf("editor")[0].innerHTML+=`<div style="resize:both;overflow:hidden;float:left"><img style="width:100%;height:100%" src="`+f("imglink").value+`"></img></div>img`
 }
 function copyHTML(){
-    console.log(f("copyhtml"))
+
     f("copyhtml").value=cf("editor")[0].innerHTML
     f("copyhtml").select()
     document.execCommand("copy")
     
 }
 le=document.activeElement
-window.addEventListener("blur",(e)=>{
-    console.log(e)
-    if(e.path[0].type!="text"&&(e.path[0].type=="color"||e.path.length==1||e.path[0].tagName=="SELECT"||e.path[0].type=="number"||e.path[0].tagName=="DIV")){
+cntnts=null;
+gs=false;
+window.addEventListener("mousedown",(e)=>{
+    console.log(document.getSelection())
+    if(gs){
+        if(!sel.collapsed){
+            console.log("remove green span")
+           sel.extractContents();
+           sel.insertNode(cntnts)
+            gs=false
+        
+    }}
+})
+window.addEventListener("click",(e)=>{
+    
+    if((e.path[0]!="text"&&e.path[0].type!="color"&&e.path.length==1&&e.path[0].tagName!="SELECT"&&e.path[0].type!="number"||e.path[0].tagName=="BODY"||(e.path[0].tagName=="DIV"&&!e.path.includes(cf("editor")[0])))){
         e.preventDefault();
-        cf("editor")[0].focus();
+        console.log("revert to editor")
+        
+        if(!e.path.includes(cf("editor")[0])){
+        
+        if(sel){
+            document.getSelection().removeAllRanges()
+            document.getSelection().addRange(sel)
+        }else{
+            cf("editor")[0].focus()
+        }}
+        
         return false
-    }
+    }else if(!e.path.includes(cf("editor")[0])){
+        
+        if(!sel.collapsed){
+        sele=document.createElement("mark")
+        sele.style="height:fit-content;background-color:rgb(107, 192, 107) !important"
+        
+        cntnts=sel.cloneContents();gs=true;
+        sele.appendChild(sel.extractContents()); sel.insertNode(sele)
+        }
+    }else{
+       }
 },true)
+
 
 </script>
