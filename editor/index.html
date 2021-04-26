@@ -390,6 +390,16 @@ function createLink(){
         pack:pack
     })
 }
+//AUTOSAVE
+ledit=""
+ledit=f("editor").contentWindow.f("editor").innerHTML;
+setInterval(()=>{
+    if(ledit==f("editor").contentWindow.f("editor").innerHTML){
+        ledit=f("editor").contentWindow.f("editor").innerHTML;
+        db.set({get:"noteEdit",content:ledit,from:user.uid,pack:pack,topic:ctx,name:n})
+    }
+
+},5000)
 document.onclick=function(e){
     if(!f("editor").contentWindow.oe&&e.target.tagName!="INPUT"){
         console.log("Back to it")
