@@ -1,285 +1,502 @@
 <style>
-    ::-webkit-scrollbar {width: 10px;margin-right:2px;}::-webkit-scrollbar-track {background: none}::-webkit-scrollbar-thumb {background: rgb(0, 162, 255);border-radius:10px;}:-webkit-scrollbar-thumb:hover {background: rgb(56, 56, 56);border-radius:10px;}
-    .tools{width:100%;height:fit-content;background-color:rgb(206, 206, 206);padding:20px;box-sizing: border-box;overflow:hidden;z-index:10}
-    .tools>*{
-        float:left;font-family:Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;color:rgb(51, 51, 51);margin:2px;cursor:pointer;
-        background-color:rgb(206, 206, 206);
+    @keyframes caretblink {
+        0%{opacity: 0;}
+        50%{opacity:1}
+        100%{opacity:0;}
+    }
+    
+    body{
+        margin:0;
+        overflow:hidden;
+    }
+    :root{
+        --toolsize:100px;
+        --selc:rgb(0,255,0)
+    }
+    *{transition:all cubic-bezier(1,0,0,1.37) 200ms;}
+    #editor{
+        overflow:hidden;
+        overflow-wrap: break-word;
+        background-color: white;
+        width:100%;
+        height:100%;
+        
         outline:none;
         
+        border-left:solid 1px rgb(105, 105, 105);
+        border-right:solid 1px rgb(105, 105, 105);
+        box-sizing: border-box;
+        padding: 10px;
+        font-family: 'Courier New';
     }
-  
-    ::spelling-error{
-        outline:solid red;
-    }
-    input,select,button{
-        cursor:pointer;
-        transform:scale(1,1);
-        transition:all 1s;
-        border:1px solid rgb(134, 134, 134);
-        border-radius:10px;
-
-    }
-    .cmenu{
-        background-color: rgb(0, 255, 0);
-        width:4px;
-        height:6px;
-        position:absolute;
-        transition:all 100ms;
+    #editorcont{
+        margin-right:auto;
+        margin-left:auto;
+        height:calc(100% - var(--toolsize));
+        width:500px;
+        user-select: none;
 
     }
-
-    body{margin-top:2%;margin-left:1%;margin-right:1%;margin-bottom:0;padding:0;background: rgb(255, 255, 255);overflow: hidden;}
-    html{background-color: gray;}
-    #size{width:10px}
-    #status{width:100px}
-    #font{font-size:small}
-    input{background-color:rgb(51, 51, 51);outline:none;}
-    select{background-color:rgb(51, 51, 51);outline:none;}
-    .editor{border-radius: 4px;box-shadow:-2px 9px 20px 0px;background-color:white;padding:2px;outline:none;width:532.591px;margin:auto;border:1px solid rgb(134, 134, 134);height:88%;overflow-x:hidden;overflow-y:auto;}
-    ::selection{background-color: rgb(0, 255, 0);}
-</style>
-
-<div class=tools>
-    <div id=status>Status:carregando</div>
-<input id=size style="width:7%;color:black" onmousewheel="
-
-
-if(window.event.deltaY<0){
-this.value=parseInt(this.value)+1
-}else{
-this.value=parseInt(this.value)-1
-}
-this.onmouseout()
-"type=number value=4 max=8 min=0></input><div style="margin-left:10px" id=fontshow>  Fonte</div><select id=font>
-<option value="Arial">Arial</option>
-<option value="Times New Roman">Times New Roman</option>
-<option value="Verdana">Verdana</option>
-<option value="Helvetica">Helvetica</option>
-<option value="Tahoma">Tahoma</option>
-<option value="Trebuchet MS">Trebuchet MS</option>
-<option value="Georgia">Georgia</option>
-<option value="Garamond">Garamond</option>
-<option value="Courier New">Courier New</option>
-<option value="Brush Script MT">Brush Script MT</option>
-</select>
-  <input type=color id=color>
-  <u onclick="document.execCommand('underline',false,null)" style="border-radius:20px;border:1px solid rgb(0, 255, 0); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Uu</u>
-  <i onclick="document.execCommand('italic',false,null)" style="border-radius:20px;border:1px solid rgb(0, 255, 0); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Ii</i>
-  <b onclick="document.execCommand('bold',false,null)" style="border-radius:20px;border:1px solid rgb(0, 255, 0); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Nn</b>
-  <div onclick="createLink()"style="border-radius:20px;border:1px solid rgb(0,162,255); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Refazer link publico</div>
-      <div onclick="getLink()"style="border-radius:20px;border:1px solid rgb(0,162,255); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Visualizar</div>
-  <label for=align>Justificar texto</label>
-  <select name="alinhar" id=align>
-      <option value="justifyLeft">esquerda</option>
-      <option value="justifyCenter">centro</option>
-      <option value="justifyRight">direita</option>
-      </select>
-      <input id=imglink style="border-radius:20px;border:1px solid rgb(0, 255, 0);" type=url>
-      <div onclick="addImage()" style="border-radius:20px;border:1px solid rgb(0, 255, 0); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Adicionar imagem</div>
-      
-      <input id=copyhtml>
-      <div onclick="copyHTML()"style="border-radius:20px;border:1px solid rgb(0,162,255); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Copiar html do documento</div>
-      <div onclick="cf('editor')[0].innerHTML+=f('copyhtml').value"style="border-radius:20px;border:1px solid rgb(0,162,255); -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;">Inserir html</div>
-      
-      
-      
-</div>
-<div class=cmenu id=cmenu></div>
-
-<div style="display:none">
     
+    #ieditor{
+        font-family: 'Courier New';
+        overflow:hidden;
+        overflow-y: auto;
+        overflow-wrap: break-word;
+        background-color: white;
+        outline:none;
+        position:absolute;
+        opacity: 0.5;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+    #caret{
+        position:absolute;
+        top:0;
+        left:0;
+        width:2px;
+        transition:all 100ms;
+        background-color: black;
+        animation: caretblink 1s linear infinite;
+    }
+    #tools{
+        width:100%;
+        border-bottom:solid 1px black;
+        height:var(--toolsize);
+        background-color: rgb(255, 255, 255);
+        box-shadow: rgb(105 105 105) -2px 2px 6px;
+    }
+    #tools > *{
+        cursor: pointer;
+        float:left;
+        margin:10px;
+        border-radius: 10px;
+        border:solid 1px rgb(105, 105, 105);
+        user-select: none;
+        }
+    
+    ::selection{background-color: var(--selc)}
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;}
+input[type=number] {-moz-appearance: textfield;}
+input[type="search"]::-webkit-search-decoration,input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-results-button,input[type="search"]::-webkit-search-results-decoration {-webkit-appearance:none;}
+    #selectionmark{
+        background-color:rgb(0, 162, 255);
+        position:absolute
+    }
+    .sel{
+        background-color:transparent;position:absolute;opacity: 1;pointer-events: none;
+        
+        
 
-</div>
-<div style="text-align:left"face="Times New Roman"size=4 face=""color="#000000"id=editor class=editor contenteditable="true">
+    }
+    .selshow{
+  
+        pointer-events:none;
+        opacity: 0.4;
+        transition:none;
+        position:absolute;
+        
+        
+        
+        background-color: rgb(105 105 105);
+
+    }
+    .selshow:hover{
+        opacity: 0.5;
+        
+    }
+    .numsel{
+        background-color: white;
+        width:96px;
+
+        box-shadow:rgb(105 105 105) -2px 2px 6px;
+
+    }
+
+    .numsel>*{float:left;}
+  
+    .plusbtn:hover,.minusbtn:hover{
+        transform:rotate(90deg)
+    }
+    .plusbtn:active,.minusbtn:active{
+        background-color: greenyellow;
+        transform:scale(0.8) rotate(180deg);
+    }
+    #fontsize{
+        height:32px;
+        width:32px;
+        outline:none;
+        border:none;
+        text-align: center;
+        
+    }
+    #fontsize:hover{
+        background-color:rgb(189, 250, 199)
+    }
+    .fontchoose{
+        position:absolute;
+        width:200px;
+        margin:0 !important;
+        height:36px;
+        overflow:hidden;
+        z-index:10;
+        background-color: white;
+        box-shadow:rgb(105 105 105) -2px 2px 6px;
+        
+    }
+    .fontchoosehold{
+        width:200px;
+        height:36px;
+        overflow:hidden;
+        z-index:10;
+        background-color: white;
+        
+    }
+    .fontchoose>h2{
+        border-top: solid 1px rgb(0, 255, 0);
+        margin:0;
+        height:36px;
+        width:100%;
+        float:left;
+        font-size: 20px;
+        text-align: center;
+        user-select: none;
+        cursor:pointer;
+        
+    }
+    .fontchoose>h2:hover{
+        background-color: rgb(196, 253, 196);
+    }
+    .droparrow{
+        float:right
+    }
+    .droparrow:hover{
+        transform:rotate(90deg)
+    }
+    .fontcolors{
+        overflow:hidden;
+        box-shadow:rgb(105 105 105) -2px 2px 6px;
+        width:118px;
+    }
+    .colorchoose,.bcolorchoose{
+        overflow:hidden;
+        float:right;
+        margin:0;
+        width:36px;
+        height:36px;
+        
+        background-color: rgb(255, 255, 255);
+        color:white;
+        font-family: Arial, Helvetica, sans-serif;
+        box-sizing: border-box;
+        padding-top: 2px;
+        user-select: none;
+        text-align: center;
+
+
+    }
+    .colorchoose:hover,.bcolorchoose:hover{
+        background-color: rgb(0, 255, 0);
+    }
+    
+    #color,#bcolor{
+        top:-20px;
+        position: relative;
+    top: -28px;
+    width: 36px;
+    height: 36px;
+    opacity: 0;
+        cursor:pointer
+    }
+    #textshow{
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        box-sizing: border-box;
+        padding:9px;
+        width:46px;
+        height:36px;
+        text-align: center;
+        cursor:none;
+    }
+    #s{
+        display: none;
+        position:absolute;
+    }
+    .align{
+        width:106px;
+        padding-top: 2px;
+        box-sizing: border-box;
+        
+        overflow: hidden;
+        height:36px;
+        box-shadow:rgb(105 105 105) -2px 2px 6px;
+    }
+    .align>*{
+        transition:none;
+    }
+    .align>*:hover{
+        background-color: rgb(24, 217, 255);
+    }
+    .linkmanager{
+        width:32px;
+        height:32px;
+    }
+    </style>
+<div id=tools>
+    <div class=numsel><svg width="32" onclick="f('fontsize').value--" class=minusbtn height="32" xmlns="http://www.w3.org/2000/svg"><g><line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_2" y2="16" x2="25.84153" y1="16" x1="6.15847" opacity="undefined" stroke="#000" fill="none"/></g></svg><input type="number" id=fontsize value=20><svg onclick="f('fontsize').value++" width="32" class=plusbtn height="32" xmlns="http://www.w3.org/2000/svg"><g><line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_1" y2="25.10168" x2="16" y1="6.89832" x1="16" opacity="undefined" stroke="#000" fill="none"/><line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_2" y2="16" x2="25.84153" y1="16" x1="6.15847" opacity="undefined" stroke="#000" fill="none"/></g></svg></div>
+
+
+    <div class="fontchoosehold" id=fontchoosehold></div>
+    <div class="fontchoose" id=fontchoose>
+        <h2 onclick='f("fontchoose").style.height="295px";
+        ;
+        //pointer-events f("ieditor").style.pointerEvents="none";
+        
+        setTimeout(()=>{document.addEventListener("click",closeFontMenu)})'
+         id="fontfamily" type="search" style="font-family: Arial, Helvetica, sans-serif;width:157px;height:36px;padding-top:8px;box-sizing: border-box;float:left;border-top:none;font-size:17px" value=arial>Arial</h2>
+        
+        <svg id=droparrow onclick='
+        //pointer-events f("ieditor").style.pointerEvents="none";
+        
+        f("fontchoose").style.height="295px";
+        
+        setTimeout(()=>{document.addEventListener("click",closeFontMenu)})'width="32" class=droparrow height="32" xmlns="http://www.w3.org/2000/svg"><g><title>Outras fontes</title><path stroke-width="1" stroke="#000" id="svg_1" d="m26.60806,6.71795l-10.60806,18.5641l-10.60806,-18.5641l21.21612,0z" opacity="undefined" fill="#fff"/></g></svg>
+        
+        <h2 onclick=chooseFont(this) style="font-family: Arial, Helvetica, sans-serif;">Arial</h2>
+        <h2 onclick=chooseFont(this) style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">'Times New Roman'</h2>
+        <h2 onclick=chooseFont(this) style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Impact</h2>
+        <h2 onclick=chooseFont(this) style="font-family:'Courier New', Courier, monospace ">'Courier New'</h2>
+        <h2 onclick=chooseFont(this) style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ">'Gill Sans MT'</h2>
+        <h2 onclick=chooseFont(this) style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif ">Verdana</h2>
+        <h2 onclick=chooseFont(this) style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ">Segoe UI</h2>
+        
     </div>
+        <div class=fontcolors>
+
+    <div class=colorchoose id=colorchoose >
+        <svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            
+            <g>
+             
+             <text id=colorshow transform="matrix(1,0,0,1,0,0) " xml:space="preserve" text-anchor="start" font-family="sans-serif" font-size="24" id="svg_1" y="24.35532" x="7.96539" opacity="undefined" stroke-width="0" stroke="#000" fill="#894F3F">A</text>
+            </g>
+           </svg>
+        <input type="color" id=color value=#000000>
+
+    </div>
+
+
+
+    <div class=bcolorchoose id=bcolorchoose>
+        <svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <g>
+             <title>Cor do fundo do texto</title>
+             <path stroke="#999999" id="svg_2" d="m-3.15278,1.54021l3.36281,-3.42097l16.86257,13.95522l-3.10116,3.58572l-17.12422,-14.11997z" opacity="undefined" fill-opacity="null" stroke-opacity="null" stroke-dasharray="null" stroke-width="0" fill="#BBBBBB"/>
+             <path id="bcolorshow" fill="#422C10" stroke="#999999" stroke-width="1" stroke-dasharray="null" stroke-opacity="null" opacity="undefined" d="m15.01515,16.22727c0,-0.15151 2.72728,-3.33333 2.71211,-3.34849c0.01517,0.01516 11.22728,5.62122 -1.6515,13.34848c-12.87878,7.72727 -3.0303,5.30303 -3.0303,5.45455c0,0.15151 -6.21212,0.30303 -6.22728,0.28786c0.01516,0.01517 -18.7727,6.3788 3.65152,-10.28786" id="svg_3"/>
+            </g>
+           
+           </svg>
+        <input type="color" id=bcolor value=#ffffff>
+
+    </div>
+
+
+    <div id=textshow>A</div></div>
+
+    
+    <div class=align id=textalign>
+        <svg width="32"onclick="setTextAlign('left')" id=textalign-left height="32" xmlns="http://www.w3.org/2000/svg">
+            <g>
+             <title>Layer 1</title>
+             <rect fill="#000000" opacity="undefined" x="4.88189" y="12.85039" width="20.47244" height="4.09449" id="svg_2" stroke="#000"/>
+             <rect fill="#000000" opacity="undefined" x="4.88189" y="22.22047" width="16.69291" height="4.09449" id="svg_3" stroke="#000"/>
+             <rect fill="#000000" opacity="undefined" x="4.88189" y="4.12599" width="22.83464" height="4.09449" id="svg_4" stroke="#000"/>
+            </g>
+           
+           </svg>
+
+
+           <svg width="32" onclick="setTextAlign('center')"id=textalign-center height="32" xmlns="http://www.w3.org/2000/svg">
+            <g>
+             
+             <rect fill="#000000" opacity="undefined" x="6.06299" y="12.85039" width="20.47244" height="4.09449" id="svg_2" stroke="#000"/>
+             
+             <rect fill="#000000" opacity="undefined" x="7.95276" y="22.22047" width="16.69291" height="4.09449" id="svg_3" stroke="#000"/>
+             <rect fill="#000000" opacity="undefined" x="4.88189" y="4.12599" width="22.83464" height="4.09449" id="svg_4" stroke="#000"/>
+            </g>
+           
+           </svg>
+
+           <svg width="32" onclick="setTextAlign('right')" id=textalign-right height="32" xmlns="http://www.w3.org/2000/svg">
+            <g>
+             
+             <rect fill="#000000" opacity="undefined" x="7.24409" y="12.85039" width="20.47244" height="4.09449" id="svg_2" stroke="#000"/>
+             <rect fill="#000000" opacity="undefined" x="11.02362" y="22.22047" width="16.69291" height="4.09449" id="svg_3" stroke="#000"/>
+             <rect fill="#000000" opacity="undefined" x="4.88189" y="4.12599" width="22.83464" height="4.09449" id="svg_4" stroke="#000"/>
+            </g>
+           
+           </svg>
+    </div>
+    <img src="addLink.png" class="linkmanager"id=makelink>
+    <img src="viewlink.png"class="linkmanager" id=viewlink>
+</div>
+<div id="editorcont" >
+<iframe id=editor src="editable.html"></iframe></div>
 <script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-app.js"></script><script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-database.js"></script><script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-auth.js"></script><!-- Initialize Firebase --><script src="https://jnoteit.web.app/__/firebase/init.js"></script>
-<script>
-req=false
-autoSave=0;db=firebase.database()
+<script defer>
+cf = (el) => document.getElementsByClassName(el);
+f = (el) => document.getElementById(el);
+function gcookies(){ro={};a=document.cookie.split("; ");for(i in a){ro[a[i].split("=")[0]]=a[i].split("=")[1]}return ro}
 pack=document.location.href.split("?")[1].replaceAll("%F3","ó").replaceAll("%EA","ê").replaceAll("%20"," ").split(":")[0]
 ctx=document.location.href.split("?")[1].replaceAll("%F3","ó").replaceAll("%EA","ê").replaceAll("%20"," ").split(":")[1]
 n=document.location.href.split("?")[1].replaceAll("%F3","ó").replaceAll("%EA","ê").replaceAll("%20"," ").split(":")[2]
-    document.execCommand("fontName",true,"Arial")
-    f=(e)=>{return document.getElementById(e)};cf=(e)=>{return document.getElementsByClassName(e)}
-    
-function gcookies(){ro={};a=document.cookie.split("; ");for(i in a){ro[a[i].split("=")[0]]=a[i].split("=")[1]}return ro}
-function init(){
-f("size").onmouseout=function(){
-    document.execCommand("fontSize",false,this.value)
-}
-f("size").onclick=f("size").onmouseout
-f("font").onclick=function(){
-    document.execCommand("fontName",false,this.value)
-}
-f("color").onclick=function(){
-    document.execCommand("foreColor",false,this.value)
-};f("color").onmousemove=f("color").onclick;
-f("color").onmouseout=f("color").onclick;
-f("color").onmouseover=f("color").onclick;
-f("editor").onclick=selection
-f("editor").onkeydown=function(e){
-    
-    switch(e.key){
-        case"ArrowUp":{selection();break}
-        case"ArrowDown":{selection();break}
-        case"ArrowLeft":{selection();break}
-        case"ArrowRight":{selection();break}
-        case"Home":{selection();break}
-        case"End":{selection();break}
-        case"PageUp":{selection();break}
-        case"PageDown":{selection();break}
-        case"Backspace":{selection();break}
-        
+//SETUP
+nots=[]
+//FIREBASE
+    db=firebase.database().ref("/")
+//AUTH+LOAD 
+
+    try{
+        if(gcookies().email){
+        firebase.auth().signInWithEmailAndPassword(gcookies().email,gcookies().pass).then((userCredential) => {user = userCredential.user;req=true;db.set({from:user.uid,pack:pack,get:"noteView",topic:ctx,name:n})});}else{
+            throw {code:"auth/no-login"}
+        }
+    }catch(e){
+
+        switch(e.code){
+            case"auth/no-login":{
+                not("red","Você tentou acessar um documento na sua conta mas não fez login [clique para fazer login]",9999999,function(){window.location="https://jnoteit.web.app"})
+            }
+            default:{
+                not("red",e.code,9999999,function(){window.location="https://jnoteit.web.app"})
+            }
+        }
     }
-    if(e.key=="Tab"){
-        e.preventDefault()
-        
-        
-    }
-    
-}
-
-ldoc=""   
-setInterval(function(){
-    if(ldoc!=cf("editor")[0].innerHTML){
-        f("cmenu").style.display=""
-        
-        ldoc=cf("editor")[0].innerHTML
-        f("status").textContent="Status:salvando..."
-        req=true
-        db.ref("/").set({from:user.uid,topic:ctx,pack:pack,name:n,get:"noteEdit",content:cf("editor")[0].innerHTML})
-        }else{f("cmenu").style.display="none"}
-        },3000)
-function rgbhex(r,g,b){
-    hex=Number(r).toString(16);if(hex.length<2){hex="0"+hex};
-        red=hex
-        hex=Number(g).toString(16);if(hex.length<2){hex="0"+hex};
-        green=hex
-        hex=Number(b).toString(16);if(hex.length<2){hex="0"+hex};
-        blue=hex
-        return red+green+blue}
-
-
-        
-        f("editor").onmousewheel=function(){
-            f("cmenu").style="top:"+(document.getSelection().anchorNode.parentElement.offsetTop-cf("editor")[0].scrollTop)+"px;left:"+(cf("editor")[0].offsetLeft-4)+"px;height:"+document.getSelection().anchorNode.parentElement.offsetHeight
-        }
-function selection(e){
-    
-    if(document.getSelection().anchorNode.id!="editor"){
-        
-        
-        a=Math.random().toString(36);b=Math.random().toString(36)
-        if(e.path.includes(cf("editor")[0])){
-         
-        sel=document.getSelection().getRangeAt(0);
-        }
-        
-        
-        f("align").value="justify"+getComputedStyle(document.getSelection().anchorNode.parentElement).textAlign.slice(0,1).toUpperCase()+getComputedStyle(document.getSelection().anchorNode.parentElement).textAlign.slice(1)
-        
-        srgb=getComputedStyle(document.getSelection().anchorNode.parentElement).color.split("(")[1].split(")")[0].split(", ")
-        f("color").value="#"+rgbhex(srgb[0],srgb[1],srgb[2])
-        f("font").value=getComputedStyle(document.getSelection().anchorNode.parentElement).fontFamily.replaceAll('"',"")
-        switch( parseInt(getComputedStyle(document.getSelection().anchorNode.parentElement).fontSize.slice(0,-2))){
-            case 10:{f("size").value=1;break}
-            case 13:{f("size").value=2;break}
-            case 16:{f("size").value=3;break}
-            case 18:{f("size").value=4;break}
-            case 24:{f("size").value=5;break}
-            case 32:{f("size").value=6;break}
-            case 48:{f("size").value=7;break}
-        }
-        
-        
-    
-}
-}
-
-f("editor").onkeyup=selection
-f("align").onclick=function(){
-document.execCommand(this.value,false,null)
-}
-}
-
-firebase.auth().signInWithEmailAndPassword(gcookies().email,gcookies().pass).then((userCredential) => {user = userCredential.user;db.ref('/').set({from:user.uid,pack:pack,get:"noteView",topic:ctx,name:n});
-db.ref('/').on("value",(v)=>{val=v.val();if(!user){return}
-if(val.from==user.uid&&req==false&&val.topic==ctx&&val.name==n&&val.pack==pack){
-    cf("editor")[0].innerHTML=val.content;
-}
-
-if(val.to==user.uid&&val.status=="ok"&&val.get=="createLink"||val.get=="getLink"){
-    if(req){
-    window.open(window.location.origin+"/l?"+val.link,"publicDoc","width=500;height=300")}
-}
-    if(val.to==user.uid&&val.status=="ok"){f("status").textContent="Status:salvo"}
-if(val.to!=user.uid||val.get!="noteView"||val.from!="server"||val.topic!=ctx||val.name!=n){return}
-f("editor").innerHTML=val.content
-f("status").textContent="Status:Carregado"
-init()
-
-if(req=true){req=false}
-})})
-function createLink(){
-    req=true
-db.ref("/").set({from:user.uid,pack:pack,get:"createLink",destination:user.uid+":"+pack+":"+ctx+":"+n})
-}
+//FIREBASE FUNCTIONALITY
 function getLink(){
     req=true
-db.ref("/").set({from:user.uid,pack:pack,get:"getLink",destination:user.uid+":"+pack+":"+ctx+":"+n})
+    db.set({
+        get:"getLink",
+        from:user.uid,
+        destination:user.uid+":"+pack+":"+ctx+":"+n,
+        pack:pack})
 }
-function addImage(){
-    cf("editor")[0].innerHTML+=`<div style="resize:both;overflow:hidden;float:left"><img style="width:100%;height:100%" src="`+f("imglink").value+`"></img></div>img`
+function createLink(){
+    req=true
+    db.set({
+        get:"createLink",
+        from:user.uid,
+        destination:user.uid+":"+pack+":"+ctx+":"+n,
+        pack:pack
+    })
 }
-function copyHTML(){
+document.onclick=function(e){
+    if(!f("editor").contentWindow.oe&&e.target.tagName!="INPUT"){
+        console.log("Back to it")
+        setTimeout(()=>{f("editor").focus()},0)
+    }
+}
+req=false;
+db.on("value",(v)=>{val=v.val()
+    
+    if(user){if(val.to==user.uid){
+        if(req&&val.from=="server"){
+            req=false
+            if(val.get=="noteView"){
+                f("editor").contentWindow.f("editor").innerHTML=val.content
+            }
+            if(val.get=="createLink"||val.get=="getLink"){
+                window.open(window.location.origin+"/l?"+val.link,"publicDoc","width=500;height=300")}
+            }
+    
+    }
 
-    f("copyhtml").value=cf("editor")[0].innerHTML
-    f("copyhtml").select()
-    document.execCommand("copy")
-    
+}})
+function getColors(){
+    return {color:f("color").value,bcolor:f("bcolor").value,size:f("fontsize").value}
 }
-le=document.activeElement
-cntnts=null;
-gs=false;
-window.addEventListener("mousedown",(e)=>{
-    console.log(document.getSelection())
-    if(gs){
-        if(!sel.collapsed){
-            console.log("remove green span")
-           sel.extractContents();
-           sel.insertNode(cntnts)
-            gs=false
-        
-    }}
-})
-window.addEventListener("click",(e)=>{
+
+
+
+function not(color,text,imp,click){nnot=document.createElement("div");nnot.style="animation:not 4s;width:334px;height:66px;position:absolute;bottom:0;right:0;transition:all 1s";nnot.style.backgroundColor=color;nnot.style.opacity="0.4";nnot.style.bottom=nots.length*68+"px";nnot.innerHTML=text;nots.push(document.body.appendChild(nnot));nnot.close=function(){for(i in nots){nots[i].style.bottom=((parseInt(nots[i].style.bottom.slice(0,-2)))-68)+"px"}this.style.right="-334px";setTimeout(()=>{nots.splice(this,1);this.remove()},1000)};nnot.init=function(imp){setTimeout(()=>{this.close()},imp)};nnot.onclick=click;nnot.init(imp)}
+
+function getNodePath(node) {path = [node];while (path[path.length - 1]) {path.push(path[path.length - 1].parentElement)}path.pop();return path}
+
+    function chooseFont(e) {
     
-    if((e.path[0]!="text"&&e.path[0].type!="color"&&e.path.length==1&&e.path[0].tagName!="SELECT"&&e.path[0].type!="number"||e.path[0].tagName=="BODY"||(e.path[0].tagName=="DIV"&&!e.path.includes(cf("editor")[0])))){
-        e.preventDefault();
-        console.log("revert to editor")
+    f("fontfamily").style.fontFamily = e.style.fontFamily;
+    f("fontfamily").textContent = e.textContent
+    f("editor").contentDocument.execCommand('fontName',false,e.textContent)
+    closeFontMenu()
+    setTimeout(()=>{f("editor").focus()},0)
+    }
+    
+    function closeFontMenu(e) {
+    
+    
+    if (!e) {
+        f("fontchoose").style.height = "36px";
+        f("fontchoose").style.overflowY = "hidden"
+        setTimeout(() => {
+            document.removeEventListener("click", closeFontMenu)
+        })
         
-        if(!e.path.includes(cf("editor")[0])){
         
-        if(sel){
-            document.getSelection().removeAllRanges()
-            document.getSelection().addRange(sel)
-        }else{
-            cf("editor")[0].focus()
-        }}
-        
-        return false
-    }else if(!e.path.includes(cf("editor")[0])){
-        
-        if(!sel.collapsed){
-        sele=document.createElement("mark")
-        sele.style="height:fit-content;background-color:rgb(107, 192, 107) !important"
-        
-        cntnts=sel.cloneContents();gs=true;
-        sele.appendChild(sel.extractContents()); sel.insertNode(sele)
+    } else {
+        if ((!getNodePath(e.target).includes(f("fontchoose"))) || getNodePath(e.target).includes(f("droparrow"))) {
+            f("fontchoose").style.height = "36px";
+            f("fontchoose").style.overflowY = "hidden"
+            setTimeout(() => {
+                document.removeEventListener("click", closeFontMenu)
+            })
         }
-    }else{
-       }
-},true)
+    }
+    
+    }
+    f("textalign").value="left"
+    function setTextAlign(ta){
+        f("textalign-"+f("textalign").value).style.backgroundColor=""
+        f("textalign-"+ta).style.backgroundColor="rgb(197 234 255)"
+        f("textalign").value=ta
+        switch(ta){
+        case"left":{f("editor").contentDocument.execCommand("justifyLeft");break}
+        case"right":{f("editor").contentDocument.execCommand("justifyRight");break}
+        case"center":{f("editor").contentDocument.execCommand("justifyCenter");break}
+        }
+        setTimeout(()=>{f("editor").focus()},0)
+        
+    }
+    lcolor=false
+    setInterval(()=>{
+        if(lcolor!=getColors()){
+            if(lcolor.color!=getColors().color){
+                f("editor").contentDocument.execCommand("forecolor",false,getColors().color)
+            }
+            if(lcolor.bcolor!=getColors().bcolor){
+                f("editor").contentDocument.execCommand("backcolor",false,getColors().bcolor)
+            }
+        lcolor=getColors()
+        
+        }
 
 
-</script>
+
+
+
+        fcp = f("fontchoosehold").getBoundingClientRect()
+
+f("fontchoose").style.top = fcp.y + "px";
+f("fontchoose").style.left = fcp.x + "px";
+        f("colorshow").setAttribute("fill", f("color").value)
+    f("bcolorshow").setAttribute("fill", f("bcolor").value)
+    f("textshow").style.color = f("color").value
+    f("textshow").style.backgroundColor = f("bcolor").value
+    if(f("editor").contentWindow.f("editor").scrollHeight>f("editor").contentWindow.f("editor").clientHeight){
+            f("editor").style.width="517px"
+            
+        }else{
+            f("editor").style.width="500px"
+            
+        }
+    },10)
+    </script>

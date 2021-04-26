@@ -219,8 +219,44 @@ E
   firebase.initializeApp(firebaseConfig);
 </script>
 <script>loc={}
-
-
+    
+    function setToDebug(){
+        const ws=new WebSocket("ws://"+window.location.href.slice(7,-1)+":8192")
+        db={
+            ref:function(){
+                return {
+                    on:function(e,f){
+                        ws.onmessage=function(e){f({e,val:function(){
+                            try{
+                                rv=JSON.parse(this.e.data)
+                            }catch(e){
+                                return this.e.data
+                            }
+                            return rv
+                        
+                        
+                        }})}
+                    },
+                    set:function(e){
+                        if(typeof e=="object"){
+                        ws.send(JSON.stringify(e))
+                        }else{
+                            ws.send(e)
+                        }
+                    }
+                }
+            }
+        }
+        auth.onAuthStateChanged(u=>{
+            if(u){
+                
+                u.getIdToken(true).then((token)=>{
+                    ws.send(JSON.stringify({get:"SET_VERIFICATION_TOKEN",token}))
+                })
+                
+            }
+        })
+    }
     if(window.location.origin.startsWith("http://localhost")){
         loc.git=window.location.href;
         loc.origin="http://localhost";
@@ -235,13 +271,28 @@ nots=[];
 f=(e)=>{return document.getElementById(e)};cf=(e)=>{return document.getElementsByClassName(e)}
 
 f("packname").onkeydown=function(e){
-        if(e.key==" "){
-            e.preventDefault();not("red","Espaços não podem ser usados no nome de notas ou ficharios",5000,function(){})
+        if(e.key==" "||e.key=="/"){
+            e.preventDefault();not("red","caractére invalido",5000,function(){})
         }
     }
 function gcookies(){ro={};a=document.cookie.split("; ");for(i in a){ro[a[i].split("=")[0]]=a[i].split("=")[1]}return ro}
 db=firebase.database();sp=f("mainpack")
 auth=firebase.auth()
+
+
+
+
+
+
+
+setToDebug()
+
+
+
+
+
+
+
 if(gcookies().email){
     f("mail").value=gcookies().email
     f("pass").value=gcookies().pass;login() 
@@ -449,10 +500,14 @@ db.ref("/").on("value",(v)=>{val=v.val()
 if(val.to==user.uid){
 if(val.get=="home"){
     if(!val.content){return}
+    notel={}
 notes=val.content
+
+
 packs=Object.keys(notes)
 
 for(i in packs){
+    notel[packs[i]]={l:0}
     if(val.shared){
         if(val.shared.includes(packs[i])){
             p=true
@@ -468,9 +523,13 @@ for(i in packs){
         
         createPack(true,p,true)
     }
+    for(l in notes[packs[i]]){
+        notel
+    }
 
 
 }
+
 fetch("https://api.ipify.org?format=json").then((r)=>{return r.json()}).then((r)=>{db.ref("/").set({get:"visit",ip:r.ip,t:Date.now(),location:window.location.href})})
 saved=val.saved
 for(i in val.saved){

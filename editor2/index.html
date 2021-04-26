@@ -4,51 +4,14 @@
         50%{opacity:1}
         100%{opacity:0;}
     }
-    
-    body{
-        margin:0;
-        overflow:hidden;
-    }
-    :root{
-        --toolsize:100px;
-        --selc:rgb(0,255,0)
-    }
-    *{transition:all cubic-bezier(1,0,0,1.37) 200ms;}
+    *{transition: all 1s;}
     #editor{
-        overflow:hidden;
-        overflow-wrap: break-word;
-        background-color: white;
-        width:100%;
-        height:100%;
-        
-        outline:none;
-        
-        border-left:solid 1px rgb(105, 105, 105);
-        border-right:solid 1px rgb(105, 105, 105);
-        box-sizing: border-box;
-        padding: 10px;
-        font-family: 'Courier New';
+     outline:none;
+     pointer-events: none;
     }
-    #editorcont{
-        margin-right:auto;
-        margin-left:auto;
-        height:calc(100% - var(--toolsize));
-        width:500px;
-        user-select: none;
-
-    }
-    
     #ieditor{
-        font-family: 'Courier New';
-        overflow:hidden;
-        overflow-y: auto;
-        overflow-wrap: break-word;
-        background-color: white;
-        outline:none;
         position:absolute;
-        opacity: 0.5;
-        box-sizing: border-box;
-        padding: 10px;
+        opacity: 0.2;
     }
     #caret{
         position:absolute;
@@ -61,421 +24,348 @@
     }
     #tools{
         width:100%;
-        border-bottom:solid 1px black;
-        height:var(--toolsize);
-        background-color: rgb(255, 255, 255);
-        box-shadow: rgb(105 105 105) -2px 2px 6px;
+        height:40px;
+        background-color: black;
     }
-    #tools > *{
-        cursor: pointer;
-        float:left;
-        margin:10px;
-        border-radius: 10px;
-        border:solid 1px rgb(105, 105, 105);
-        user-select: none;
-        }
-    
-    ::selection{background-color: var(--selc)}
-input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;}
-input[type=number] {-moz-appearance: textfield;}
-input[type="search"]::-webkit-search-decoration,input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-results-button,input[type="search"]::-webkit-search-results-decoration {-webkit-appearance:none;}
+    ::selection{
+        background-color: transparent;
+    }
     #selectionmark{
         background-color:rgb(0, 162, 255);
         position:absolute
     }
     .sel{
-        background-color:transparent;position:absolute;opacity: 1;pointer-events: none;
-        
-        
+        background-color: rgb(0, 162, 255);position:absolute;opacity: 0.1;pointer-events: none;
 
-    }
-    .selshow{
-  
-        pointer-events:none;
-        opacity: 0.4;
-        transition:none;
-        position:absolute;
-        
-        
-        
-        background-color: rgb(105 105 105);
-
-    }
-    .selshow:hover{
-        opacity: 0.5;
-        
-    }
-    .numsel{
-        background-color: white;
-        width:96px;
-
-        box-shadow:rgb(105 105 105) -2px 2px 6px;
-
-    }
-
-    .numsel>*{float:left;}
-  
-    .plusbtn:hover,.minusbtn:hover{
-        transform:rotate(90deg)
-    }
-    .plusbtn:active,.minusbtn:active{
-        background-color: greenyellow;
-        transform:scale(0.8) rotate(180deg);
-    }
-    #fontsize{
-        height:32px;
-        width:32px;
-        outline:none;
-        border:none;
-        text-align: center;
-        
-    }
-    #fontsize:hover{
-        background-color:rgb(189, 250, 199)
-    }
-    .fontchoose{
-        position:absolute;
-        width:200px;
-        margin:0 !important;
-        height:36px;
-        overflow:hidden;
-        z-index:10;
-        background-color: white;
-        box-shadow:rgb(105 105 105) -2px 2px 6px;
-        
-    }
-    .fontchoosehold{
-        width:200px;
-        height:36px;
-        overflow:hidden;
-        z-index:10;
-        background-color: white;
-        
-    }
-    .fontchoose>h2{
-        border-top: solid 1px rgb(0, 255, 0);
-        margin:0;
-        height:36px;
-        width:100%;
-        float:left;
-        font-size: 20px;
-        text-align: center;
-        user-select: none;
-        cursor:pointer;
-        
-    }
-    .fontchoose>h2:hover{
-        background-color: rgb(196, 253, 196);
-    }
-    .droparrow{
-        float:right
-    }
-    .droparrow:hover{
-        transform:rotate(90deg)
-    }
-    .fontcolors{
-        overflow:hidden;
-        box-shadow:rgb(105 105 105) -2px 2px 6px;
-        width:118px;
-    }
-    .colorchoose,.bcolorchoose{
-        overflow:hidden;
-        float:right;
-        margin:0;
-        width:36px;
-        height:36px;
-        
-        background-color: rgb(255, 255, 255);
-        color:white;
-        font-family: Arial, Helvetica, sans-serif;
-        box-sizing: border-box;
-        padding-top: 2px;
-        user-select: none;
-        text-align: center;
-
-
-    }
-    .colorchoose:hover,.bcolorchoose:hover{
-        background-color: rgb(0, 255, 0);
-    }
-    
-    #color,#bcolor{
-        top:-20px;
-        position: relative;
-    top: -28px;
-    width: 36px;
-    height: 36px;
-    opacity: 0;
-        cursor:pointer
-    }
-    #textshow{
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 20px;
-        box-sizing: border-box;
-        padding:9px;
-        width:46px;
-        height:36px;
-        text-align: center;
-        cursor:none;
-    }
-    #s{
-        display: none;
-        position:absolute;
-    }
-    .align{
-        width:106px;
-        padding-top: 2px;
-        box-sizing: border-box;
-        
-        overflow: hidden;
-        height:36px;
-        box-shadow:rgb(105 105 105) -2px 2px 6px;
-    }
-    .align>*{
-        transition:none;
-    }
-    .align>*:hover{
-        background-color: rgb(24, 217, 255);
-    }
-    .linkmanager{
-        width:32px;
-        height:32px;
     }
     </style>
-<div id=tools>
-    <div class=numsel><svg width="32" onclick="f('fontsize').value--" class=minusbtn height="32" xmlns="http://www.w3.org/2000/svg"><g><line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_2" y2="16" x2="25.84153" y1="16" x1="6.15847" opacity="undefined" stroke="#000" fill="none"/></g></svg><input type="number" id=fontsize value=20><svg onclick="f('fontsize').value++" width="32" class=plusbtn height="32" xmlns="http://www.w3.org/2000/svg"><g><line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_1" y2="25.10168" x2="16" y1="6.89832" x1="16" opacity="undefined" stroke="#000" fill="none"/><line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_2" y2="16" x2="25.84153" y1="16" x1="6.15847" opacity="undefined" stroke="#000" fill="none"/></g></svg></div>
-
-
-    <div class="fontchoosehold" id=fontchoosehold></div>
-    <div class="fontchoose" id=fontchoose>
-        <h2 onclick='f("fontchoose").style.height="295px";
-        ;
-        //pointer-events f("ieditor").style.pointerEvents="none";
-        
-        setTimeout(()=>{document.addEventListener("click",closeFontMenu)})'
-         id="fontfamily" type="search" style="font-family: Arial, Helvetica, sans-serif;width:157px;height:36px;padding-top:8px;box-sizing: border-box;float:left;border-top:none;font-size:17px" value=arial>Arial</h2>
-        
-        <svg id=droparrow onclick='
-        //pointer-events f("ieditor").style.pointerEvents="none";
-        
-        f("fontchoose").style.height="295px";
-        
-        setTimeout(()=>{document.addEventListener("click",closeFontMenu)})'width="32" class=droparrow height="32" xmlns="http://www.w3.org/2000/svg"><g><title>Outras fontes</title><path stroke-width="1" stroke="#000" id="svg_1" d="m26.60806,6.71795l-10.60806,18.5641l-10.60806,-18.5641l21.21612,0z" opacity="undefined" fill="#fff"/></g></svg>
-        
-        <h2 onclick=chooseFont(this) style="font-family: Arial, Helvetica, sans-serif;">Arial</h2>
-        <h2 onclick=chooseFont(this) style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">'Times New Roman'</h2>
-        <h2 onclick=chooseFont(this) style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Impact</h2>
-        <h2 onclick=chooseFont(this) style="font-family:'Courier New', Courier, monospace ">'Courier New'</h2>
-        <h2 onclick=chooseFont(this) style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ">'Gill Sans MT'</h2>
-        <h2 onclick=chooseFont(this) style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif ">Verdana</h2>
-        <h2 onclick=chooseFont(this) style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ">Segoe UI</h2>
-        
+    <div id=tools>
+        <input id=fs type=number value=1>
     </div>
-        <div class=fontcolors>
+    <div id=caret></div>
+    <div id=editor contenteditable="false"><font face="Courier New"> dasd <font color="red">ll  <font color="green">ll</font></font></font><font face="Brush Script MT"> dasde</font></div>
+<div id=ieditor contenteditable="false"></div>
 
-    <div class=colorchoose id=colorchoose >
-        <svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
-            
-            <g>
-             
-             <text id=colorshow transform="matrix(1,0,0,1,0,0) " xml:space="preserve" text-anchor="start" font-family="sans-serif" font-size="24" id="svg_1" y="24.35532" x="7.96539" opacity="undefined" stroke-width="0" stroke="#000" fill="#894F3F">A</text>
-            </g>
-           </svg>
-        <input type="color" id=color value=#000000>
-
-    </div>
+<script>
+/*
+On selection:
+put mark on invisible editor
 
 
 
-    <div class=bcolorchoose id=bcolorchoose>
-        <svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
-            <g>
-             <title>Cor do fundo do texto</title>
-             <path stroke="#999999" id="svg_2" d="m-3.15278,1.54021l3.36281,-3.42097l16.86257,13.95522l-3.10116,3.58572l-17.12422,-14.11997z" opacity="undefined" fill-opacity="null" stroke-opacity="null" stroke-dasharray="null" stroke-width="0" fill="#BBBBBB"/>
-             <path id="bcolorshow" fill="#422C10" stroke="#999999" stroke-width="1" stroke-dasharray="null" stroke-opacity="null" opacity="undefined" d="m15.01515,16.22727c0,-0.15151 2.72728,-3.33333 2.71211,-3.34849c0.01517,0.01516 11.22728,5.62122 -1.6515,13.34848c-12.87878,7.72727 -3.0303,5.30303 -3.0303,5.45455c0,0.15151 -6.21212,0.30303 -6.22728,0.28786c0.01516,0.01517 -18.7727,6.3788 3.65152,-10.28786" id="svg_3"/>
-            </g>
-           
-           </svg>
-        <input type="color" id=bcolor value=#ffffff>
-
-    </div>
 
 
-    <div id=textshow>A</div></div>
+*/
+/*
+Variable names table
+sel:  current selection
+iesel:Editor selection
 
-    
-    <div class=align id=textalign>
-        <svg width="32"onclick="setTextAlign('left')" id=textalign-left height="32" xmlns="http://www.w3.org/2000/svg">
-            <g>
-             <title>Layer 1</title>
-             <rect fill="#000000" opacity="undefined" x="4.88189" y="12.85039" width="20.47244" height="4.09449" id="svg_2" stroke="#000"/>
-             <rect fill="#000000" opacity="undefined" x="4.88189" y="22.22047" width="16.69291" height="4.09449" id="svg_3" stroke="#000"/>
-             <rect fill="#000000" opacity="undefined" x="4.88189" y="4.12599" width="22.83464" height="4.09449" id="svg_4" stroke="#000"/>
-            </g>
-           
-           </svg>
-
-
-           <svg width="32" onclick="setTextAlign('center')"id=textalign-center height="32" xmlns="http://www.w3.org/2000/svg">
-            <g>
-             
-             <rect fill="#000000" opacity="undefined" x="6.06299" y="12.85039" width="20.47244" height="4.09449" id="svg_2" stroke="#000"/>
-             
-             <rect fill="#000000" opacity="undefined" x="7.95276" y="22.22047" width="16.69291" height="4.09449" id="svg_3" stroke="#000"/>
-             <rect fill="#000000" opacity="undefined" x="4.88189" y="4.12599" width="22.83464" height="4.09449" id="svg_4" stroke="#000"/>
-            </g>
-           
-           </svg>
-
-           <svg width="32" onclick="setTextAlign('right')" id=textalign-right height="32" xmlns="http://www.w3.org/2000/svg">
-            <g>
-             
-             <rect fill="#000000" opacity="undefined" x="7.24409" y="12.85039" width="20.47244" height="4.09449" id="svg_2" stroke="#000"/>
-             <rect fill="#000000" opacity="undefined" x="11.02362" y="22.22047" width="16.69291" height="4.09449" id="svg_3" stroke="#000"/>
-             <rect fill="#000000" opacity="undefined" x="4.88189" y="4.12599" width="22.83464" height="4.09449" id="svg_4" stroke="#000"/>
-            </g>
-           
-           </svg>
-    </div>
-    <img src="addLink.png" class="linkmanager"id=makelink>
-    <img src="viewlink.png"class="linkmanager" id=viewlink>
-</div>
-<div id="editorcont" >
-<iframe id=editor src="editable.html"></iframe></div>
-<script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-app.js"></script><script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-database.js"></script><script src="https://jnoteit.web.app/__/firebase/8.1.1/firebase-auth.js"></script><!-- Initialize Firebase --><script src="https://jnoteit.web.app/__/firebase/init.js"></script>
-<script defer>
-cf = (el) => document.getElementsByClassName(el);
+*/
 f = (el) => document.getElementById(el);
-function gcookies(){ro={};a=document.cookie.split("; ");for(i in a){ro[a[i].split("=")[0]]=a[i].split("=")[1]}return ro}
-pack=document.location.href.split("?")[1].replaceAll("%F3","ó").replaceAll("%EA","ê").replaceAll("%20"," ").split(":")[0]
-ctx=document.location.href.split("?")[1].replaceAll("%F3","ó").replaceAll("%EA","ê").replaceAll("%20"," ").split(":")[1]
-n=document.location.href.split("?")[1].replaceAll("%F3","ó").replaceAll("%EA","ê").replaceAll("%20"," ").split(":")[2]
-//SETUP
-nots=[]
-//FIREBASE
-    db=firebase.database().ref("/")
-//AUTH+LOAD 
+cf = (el) => document.getElementsByClassName(el);
+f("ieditor").style.top = f("editor").offsetTop;
+f("ieditor").style.left = f("editor").offsetLeft;
+f("ieditor").innerHTML = f("editor").innerHTML
+mp = {}
+oe = false;
+sm = false;
+rsc = false;
+td = false
 
-    try{
-        if(gcookies().email){
-        firebase.auth().signInWithEmailAndPassword(gcookies().email,gcookies().pass).then((userCredential) => {user = userCredential.user;req=true;db.set({from:user.uid,pack:pack,get:"noteView",topic:ctx,name:n})});}else{
-            throw {code:"auth/no-login"}
-        }
-    }catch(e){
-
-        switch(e.code){
-            case"auth/no-login":{
-                not("red","Você tentou acessar um documento na sua conta mas não fez login [clique para fazer login]",9999999,function(){window.location="https://jnoteit.web.app"})
-            }
-            default:{
-                not("red",e.code,9999999,function(){window.location="https://jnoteit.web.app"})
+function setMarks() {
+    sqs = sr.getClientRects()
+    sms = cf("sel")
+    for (el in sms) {
+        if (sms[0]) {
+            if (sms[0].remove) {
+                sms[0].remove()
             }
         }
     }
-document.onclick=function(e){
-    if(!f("editor").contentWindow.oe&&e.target.tagName!="INPUT"){
-        console.log("Back to it")
-        setTimeout(()=>{f("editor").focus()},0)
-    }
-}
-req=false;
-db.on("value",(v)=>{val=v.val()
-    
-    if(user){if(val.to==user.uid){
-        if(req){
-            req=false
-            if(val.get=="noteView"){
-                f("editor").contentWindow.f("editor").innerHTML=val.content
-            }
+    for (i in sqs) {
+        if (sqs[i].x) {
+            sq = document.createElement("div");
+            sq.classList.add("sel");
+            sq.style.top = sqs[i].y + "px";
+            sq.style.left = sqs[i].x + "px";
+            sq.style.width = sqs[i].width + "px";
+            sq.style.height = sqs[i].height + "px";
+            document.body.appendChild(sq)
         }
     }
 
-}})
-function getColors(){
-    return {color:f("color").value,bcolor:f("bcolor").value,size:f("fontsize").value}
 }
 
-
-
-function not(color,text,imp,click){nnot=document.createElement("div");nnot.style="animation:not 4s;width:334px;height:66px;position:absolute;bottom:0;right:0;transition:all 1s";nnot.style.backgroundColor=color;nnot.style.opacity="0.4";nnot.style.bottom=nots.length*68+"px";nnot.innerHTML=text;nots.push(document.body.appendChild(nnot));nnot.close=function(){for(i in nots){nots[i].style.bottom=((parseInt(nots[i].style.bottom.slice(0,-2)))-68)+"px"}this.style.right="-334px";setTimeout(()=>{nots.splice(this,1);this.remove()},1000)};nnot.init=function(imp){setTimeout(()=>{this.close()},imp)};nnot.onclick=click;nnot.init(imp)}
-
-function getNodePath(node) {path = [node];while (path[path.length - 1]) {path.push(path[path.length - 1].parentElement)}path.pop();return path}
-
-    function chooseFont(e) {
-    
-    f("fontfamily").style.fontFamily = e.style.fontFamily;
-    f("fontfamily").textContent = e.textContent
-    f("editor").contentDocument.execCommand('fontName',false,e.textContent)
-    closeFontMenu()
-    setTimeout(()=>{f("editor").focus()},0)
+function getNodePath(node) {
+    path = [node];
+    while (path[path.length - 1]) {
+        path.push(path[path.length - 1].parentElement)
     }
-    
-    function closeFontMenu(e) {
-    
-    
-    if (!e) {
-        f("fontchoose").style.height = "36px";
-        f("fontchoose").style.overflowY = "hidden"
-        setTimeout(() => {
-            document.removeEventListener("click", closeFontMenu)
-        })
-        
-        
+    path.pop();
+    return path
+}
+
+function ss() {
+    if (rsc) {
+        return
+    };
+    rsc = true
+    sel = document.getSelection();
+    if (sel.rangeCount == 0) {
+        return rsc = false
+    };
+    if (!getNodePath(sel.anchorNode).includes(f("ieditor"))) {
+
+
+        oe = false
+        console.log("not in editor")
+        return rsc = false
+    }
+    oe = true
+    sr = sel.getRangeAt(0)
+
+    iesel = sel
+
+
+    if (sel.isCollapsed) {
+        setCaret()
     } else {
-        if ((!getNodePath(e.target).includes(f("fontchoose"))) || getNodePath(e.target).includes(f("droparrow"))) {
-            f("fontchoose").style.height = "36px";
-            f("fontchoose").style.overflowY = "hidden"
-            setTimeout(() => {
-                document.removeEventListener("click", closeFontMenu)
-            })
-        }
+        setMarks()
     }
-    
-    }
-    f("textalign").value="left"
-    function setTextAlign(ta){
-        f("textalign-"+f("textalign").value).style.backgroundColor=""
-        f("textalign-"+ta).style.backgroundColor="rgb(197 234 255)"
-        f("textalign").value=ta
-        switch(ta){
-        case"left":{f("editor").contentDocument.execCommand("justifyLeft");break}
-        case"right":{f("editor").contentDocument.execCommand("justifyRight");break}
-        case"center":{f("editor").contentDocument.execCommand("justifyCenter");break}
-        }
-        setTimeout(()=>{f("editor").focus()},0)
-        
-    }
-    lcolor=false
-    setInterval(()=>{
-        if(lcolor!=getColors()){
-            if(lcolor.color!=getColors().color){
-                f("editor").contentDocument.execCommand("forecolor",false,getColors().color)
+
+
+    rsc = false
+}
+
+function setCaret() {
+    sms = cf("sel")
+    for (el in sms) {
+        if (sms[0]) {
+            if (sms[0].remove) {
+                sms[0].remove()
             }
-            if(lcolor.bcolor!=getColors().bcolor){
-                f("editor").contentDocument.execCommand("backcolor",false,getColors().bcolor)
+        }
+    }
+    ps = document.createElement("span");
+    ps.id = "ps"
+    /*
+    sr.insertNode(ps)
+    cp=f("ps").getBoundingClientRect()
+    f("caret").style.top=cp.y+"px";f("caret").style.left=cp.x+"px";f("caret").style.height=cp.height+"px"
+    sr.deleteContents();
+    */
+    cp = sr.getBoundingClientRect()
+    f("caret").style.top = cp.y + "px";
+    f("caret").style.left = cp.x + "px";
+    f("caret").style.height = cp.height + "px"
+
+}
+
+function getTree(el, n, lf) {
+    var tree = {};
+    if (!n) {
+        n = ""
+    }
+
+    lff = false
+    for (i in el.childNodes) {
+
+        if (typeof el.childNodes[i] == "object") {
+
+            if (el.childNodes[i].childNodes.length > 0) {
+                ct = getTree(el.childNodes[i], n + i + "/", lf)
+                if (typeof ct == "string") {
+                    lff = ct
+                    return lff
+                } else {
+                    tree = Object.assign(tree, (ct))
+                }
+
+            } else {
+                if (lf) {
+                    if (lf.isSameNode(el.childNodes[i])) {
+                        lff = n + i;
+                        return lff
+                    }
+                }
+                tree[n + i] = el.childNodes[i]
+
+
             }
-        lcolor=getColors()
+        }
+
+    }
+
+    return tree
+
+}
+controls = {
+    tree: {},
+    pathTo: function(el) {
+        return getTree(f("ieditor"), "", el)
+    },
+    get tree() {
+        return getTree(f("ieditor"))
+    },
+    goLeft: function(ni) {
+        tr = this.tree
+        return Object.keys(tr)[Object.keys(tr).indexOf(ni) - 1]
+    },
+    goRight: function(ni) {
+        tr = this.tree
+        return Object.keys(tr)[Object.keys(tr).indexOf(ni) + 1]
+    }
+}
+
+function gmp(e) {
+    return {
+        pxx: e.pageX + "px",
+        pxy: e.pageY + "py",
+        x: e.pageX,
+        y: e.pageY
+    }
+}
+
+document.onselectionchange = ss
+document.onkeypress = function(e) {
+    if (!oe) {
+        return true
+    }
+    switch (e.key) {
+        case "Enter": {
+            type("\n")
+            break;
+        }
+        default: {
+            type(e.key)
+        }
+    }
+}
+
+function type(str) {
+    sr.deleteContents();
+    str = str.replaceAll(" ", "\u00A0")
+    if (str == "\n") {
+        nl = document.createElement("br");
         
-        }
-
-
-
-
-
-        fcp = f("fontchoosehold").getBoundingClientRect()
-
-f("fontchoose").style.top = fcp.y + "px";
-f("fontchoose").style.left = fcp.x + "px";
-        f("colorshow").setAttribute("fill", f("color").value)
-    f("bcolorshow").setAttribute("fill", f("bcolor").value)
-    f("textshow").style.color = f("color").value
-    f("textshow").style.backgroundColor = f("bcolor").value
-    if(f("editor").contentWindow.f("editor").scrollHeight>f("editor").contentWindow.f("editor").clientHeight){
-            f("editor").style.width="517px"
+        nr = document.createRange();
+        if(sr.startContainer.textContent.length==sr.startOffset){
+            lsr=[sr.startContainer,sr.startOffset]
+            sr.startContainer.textContent+="\u00A0"
+            sr.setStart(lsr[0],lsr[1])
             
-        }else{
-            f("editor").style.width="500px"
-            
+
         }
-    },10)
-    </script>
+         
+        nr.setStart(sr.startContainer, sr.startOffset + 1)
+        sr.insertNode(nl);
+        nr.setStart(nr.startContainer, 0);
+        nr.collapse(true)
+        sel.removeAllRanges();
+        sel.addRange(nr)
+    } else {
+        so = sr.startOffset
+        sr.startContainer.textContent = sr.startContainer.textContent.slice(0, sr.startOffset) + str + sr.startContainer.textContent.slice(sr.startOffset)
+
+        sr.setStart(sr.startContainer, so + str.length);
+        sr.setEnd(sr.startContainer, so + str.length);
+        sr.collapse(false)
+    }
+
+
+    setCaret()
+    f("editor").innerHTML = f("ieditor").innerHTML
+}
+document.onkeydown = (e) => {
+
+    if (oe) {
+        switch (e.key) {
+            case "Tab": {
+                e.preventDefault();
+                type("\u00A0\u00A0\u00A0\u00A0")
+
+                sr.collapse(false)
+                document.getSelection().removeAllRanges();
+                document.getSelection().addRange(sr);
+                break;
+
+            }
+            case "Backspace": {
+                if (sr.startOffset == sr.endOffset) {
+                    if (sr.startOffset > 0) {
+                        sr.setStart(sr.startContainer, sr.startOffset - 1)
+                        sr.deleteContents();
+
+                        setCaret()
+                        f("editor").innerHTML = f("ieditor").innerHTML
+                    } else {
+
+                        ln = controls.tree[controls.goLeft(controls.pathTo(sr.startContainer))]
+                        if (sr.startContainer.textContent.length == 0) {
+                            td = sr.startContainer
+                        }
+                        sr.setStart(ln, ln.textContent.length);
+                        sr.collapse(true)
+
+                        sr.setStart(sr.startContainer, sr.startOffset - 1)
+                        sr.deleteContents();
+
+                        setCaret()
+                        if (td) {
+                            td.remove();
+                            td = false
+                        }
+                        f("editor").innerHTML = f("ieditor").innerHTML
+                    }
+
+                } else {
+
+
+                    sr.deleteContents();
+                    setCaret()
+                    f("editor").innerHTML = f("ieditor").innerHTML
+                }
+
+                break
+            }
+            case "ArrowLeft": {
+                if (sr.startOffset > 0) {
+                    rsc = true
+                    sr.setStart(sr.startContainer, sr.startOffset - 1);
+                    sr.collapse(true)
+                    rsc = false
+
+                } else {
+                    ln = controls.tree[controls.goLeft(controls.pathTo(sr.startContainer))]
+
+                    sr.setStart(ln, ln.textContent.length - 1);
+                    sr.collapse(true)
+
+                }
+
+                e.preventDefault();
+                break
+            }
+            case "ArrowRight": {
+                if (sr.startOffset < sr.startContainer.textContent.length) {
+                    rsc = true
+                    sr.setStart(sr.startContainer, sr.startOffset + 1);
+                    sr.collapse(true)
+                    rsc = false
+
+                } else {
+                    ln = controls.tree[controls.goRight(controls.pathTo(sr.startContainer))]
+                    sr.setStart(ln, 0);
+                    sr.collapse(true)
+
+                }
+                setCaret()
+                e.preventDefault();
+                break
+            }
+
+        }
+    }
+}
+</script>
