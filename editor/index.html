@@ -411,7 +411,7 @@ db.on("value",(v)=>{val=v.val()
                 ledit=f("editor").contentWindow.f("editor").innerHTML;
                 console.log("check")
                 setInterval(()=>{
-                    if(ledit==f("editor").contentWindow.f("editor").innerHTML){
+                    if(ledit!=f("editor").contentWindow.f("editor").innerHTML){
                     ledit=f("editor").contentWindow.f("editor").innerHTML;
                     db.set({get:"noteEdit",content:ledit,from:user.uid,pack:pack,topic:ctx,name:n})
                     not("green","Salvo",5000)
