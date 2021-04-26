@@ -361,6 +361,7 @@ nots=[]
         firebase.auth().signInWithEmailAndPassword(gcookies().email,gcookies().pass).then((userCredential) => {user = userCredential.user;req=true;db.set({from:user.uid,pack:pack,get:"noteView",topic:ctx,name:n})});}else{
             throw {code:"auth/no-login"}
         }
+        
     }catch(e){
 
         switch(e.code){
@@ -391,15 +392,7 @@ function createLink(){
     })
 }
 //AUTOSAVE
-ledit=""
-ledit=f("editor").contentWindow.f("editor").innerHTML;
-setInterval(()=>{
-    if(ledit==f("editor").contentWindow.f("editor").innerHTML){
-        ledit=f("editor").contentWindow.f("editor").innerHTML;
-        db.set({get:"noteEdit",content:ledit,from:user.uid,pack:pack,topic:ctx,name:n})
-    }
 
-},5000)
 document.onclick=function(e){
     if(!f("editor").contentWindow.oe&&e.target.tagName!="INPUT"){
         console.log("Back to it")
@@ -414,6 +407,15 @@ db.on("value",(v)=>{val=v.val()
             req=false
             if(val.get=="noteView"){
                 f("editor").contentWindow.f("editor").innerHTML=val.content
+                ledit=val.content
+                ledit=f("editor").contentWindow.f("editor").innerHTML;
+                setInterval(()=>{
+                if(ledit==f("editor").contentWindow.f("editor").innerHTML){
+                ledit=f("editor").contentWindow.f("editor").innerHTML;
+                db.set({get:"noteEdit",content:ledit,from:user.uid,pack:pack,topic:ctx,name:n})
+        }
+
+},5000)
             }
             if(val.get=="createLink"||val.get=="getLink"){
                 window.open(window.location.origin+"/l?"+val.link,"publicDoc","width=500;height=300")}
