@@ -179,7 +179,7 @@ setInterval(()=>{ if(sel.rangeCount>0){
 
     b = Array.from(sr.getClientRects())
     if(useMarkFilter){
-        for(i in b){
+        for(i=0;i<b.length;i++){
 
             for(l in b){
                 if(l!=i){
@@ -190,7 +190,7 @@ setInterval(()=>{ if(sel.rangeCount>0){
 
                     if((b[l].width==b[i].width)||(b[i].width==document.body.getBoundingClientRect().width)){
                         b.splice(l,1)
-
+                        i-=1;
 
 
 
