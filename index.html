@@ -44,7 +44,7 @@
     .snote:hover{background: rgb(135, 255, 135);border-color:rgb(0, 162, 255);}
     input{background-color:grey;outline:none;border:1px solid rgb(0,162,255);border-radius:6px;transition:box-shadow 1s}
     input:focus{box-shadow:0 0px 11px 2px rgb(0 162 255)}
-    button{border:none;outline:none;background-color:rgb(0, 255, 34);border-radius:25px;transition:background-color 1s}
+    button{border:none;outline:none;background-color:rgb(0, 255, 34);border-radius:25px;transition:background-color 1s;cursor:pointer}
     button:hover{background-color:rgb(0, 162, 255)}
     ::selection{color:rgb(0, 162, 255)}
     @keyframes login {
@@ -81,11 +81,20 @@
     .account{overflow:hidden;float:right;background-color:rgb(0, 255, 85);width:40%;height:100%;border-radius:25px;margin-right:10px;transition:all 1s}
     .event{height:40%;margin-left:20px;width:60%}
     .notec{float:right;width:55%;height:70%;overflow-x:hidden;overflow-y:auto;}
-    .notecopy{float:left;height:fit-content;width:fit-content;padding:10px;margin:1px;background-color:rgb(0, 162, 255);
+    .notecopy{float:left;height:fit-content;width:fit-content;padding:10px;
+        margin:5px;
+        box-shadow:-2px 3px 7px 0px grey;
+        background-color:rgb(255, 255, 255);
         cursor:pointer;
-    overflow:hidden;
+        overflow:hidden;
+        border-radius: 10px;
+        border: solid 1px gray;
     }
-    .notecopy:hover{background-color:rgb(0, 255, 34);}
+    .notecopy:active:hover {
+        transform:translate(-5px,5px);
+        box-shadow:0px 0px 0px 0px grey;
+    }
+    .notecopy:hover{background-color:rgb(190, 255, 244);}
     ::-webkit-scrollbar {width: 10px;margin-right:2px;}::-webkit-scrollbar-track {background: none}:-webkit-scrollbar-thumb {background: #888;border-radius:10px;}:-webkit-scrollbar-thumb:hover {background: rgb(56, 56, 56);border-radius:10px;}
     .editor{
         width:100%;
@@ -231,6 +240,7 @@ f=(e)=>{return document.getElementById(e)};cf=(e)=>{return document.getElementsB
 
 f("packname").onkeydown=function(e){
         if(e.key==" "){
+            
             e.preventDefault();not("red","Espaços não podem ser usados no nome de notas ou ficharios",5000,function(){})
         }
     }
@@ -253,7 +263,7 @@ function re(){
     if(!se){return}
     
 
-    f("sv").style.height=se.offsetHeight+"px"
+        f("sv").style.height=se.offsetHeight+"px"
         f("sv").style.top=se.offsetTop+"px"
         f("sv").style.left=se.offsetLeft+se.offsetWidth+"px"
         f("sh").style.width=se.offsetWidth+"px"
@@ -264,7 +274,7 @@ f("sh").onmousedown=function(w){se.style.pointerEvents="none";cs=true;x=w.client
 f("sv").onmousedown=function(w){se.style.pointerEvents="none";cs=true;x=w.clientX;y=w.clientY;document.onmousemove=(e)=>{se.style.width=se.offsetWidth-(x-e.clientX)+"px";x=e.clientX;y=e.clientY;};document.onmouseup=(e)=>{document.onmouseup=null;document.onmousemove=null;cs=false;se.style.pointerEvents="auto"}}
 f("sh").ontouchstart=function(w){se.style.pointerEvents="none";cs=true;x=w.changedTouches[0].pageX;y=w.changedTouches[0].pageY;document.ontouchmove=(e)=>{se.style.height=se.offsetHeight-(y-e.changedTouches[0].pageY)+"px";x=e.changedTouches[0].pageX;y=e.changedTouches[0].pageY;};document.ontouchend=(e)=>{document.ontouchup=null;document.ontouchmove=null;cs=false;se.style.pointerEvents="auto"}}
 f("sv").ontouchstart=function(w){se.style.pointerEvents="none";cs=true;x=w.changedTouches[0].pageX;y=w.changedTouches[0].pageY;document.ontouchmove=(e)=>{se.style.width=se.offsetWidth-(x-e.changedTouches[0].pageX)+"px";x=e.changedTouches[0].pageX;y=e.changedTouches[0].pageY;};document.ontouchend=(e)=>{document.ontouchup=null;document.ontouchmove=null;cs=false;se.style.pointerEvents="auto"}}
-
+sel=document.getSelection()
 a=cf("snote");for(b in a){e=a[b]
 e.onclick=function(){
     
@@ -283,9 +293,18 @@ e.onclick=function(){
     }else{
     f("notec").innerHTML='<input placeholder="nome" id=nnotename style="width:35%;height:5%;float:left"type=search onkeyup="noteSearch(this)"><button id=createnote style="height:5%;width:65%;float:left;margin:auto">Criar anotação</button>'
     f("nnotename").onkeydown=function(e){
-        if(e.key==" "){
-            e.preventDefault();not("red","Espaços não podem ser usados no nome de notas ou ficharios",5000,function(){})
-        }
+        if(e.key==" "){rpl="_";f("nnotename").value=f("nnotename").value.slice(0,f("nnotename").selectionStart)+rpl+f("nnotename").value.slice(f("nnotename").selectionEnd,-1);e.preventDefault();}
+        if(e.key=="/"){rpl="-";f("nnotename").value=f("nnotename").value.slice(0,f("nnotename").selectionStart)+rpl+f("nnotename").value.slice(f("nnotename").selectionEnd,-1);e.preventDefault();}
+        if(e.key=="["){rpl="(";f("nnotename").value=f("nnotename").value.slice(0,f("nnotename").selectionStart)+rpl+f("nnotename").value.slice(f("nnotename").selectionEnd,-1);e.preventDefault();}
+        if(e.key=="]"){rpl=")";f("nnotename").value=f("nnotename").value.slice(0,f("nnotename").selectionStart)+rpl+f("nnotename").value.slice(f("nnotename").selectionEnd,-1);e.preventDefault();}
+        if(e.key=="/"){rpl="-";f("nnotename").value=f("nnotename").value.slice(0,f("nnotename").selectionStart)+rpl+f("nnotename").value.slice(f("nnotename").selectionEnd,-1);e.preventDefault();}
+        if(e.key=="\\"){rpl="-";f("nnotename").value=f("nnotename").value.slice(0,f("nnotename").selectionStart)+rpl+f("nnotename").value.slice(f("nnotename").selectionEnd,-1);e.preventDefault();}
+        if(e.key==":"){rpl="#";f("nnotename").value=f("nnotename").value.slice(0,f("nnotename").selectionStart)+rpl+f("nnotename").value.slice(f("nnotename").selectionEnd,-1);e.preventDefault();}
+        if(e.key==";"){rpl="+";f("nnotename").value=f("nnotename").value.slice(0,f("nnotename").selectionStart)+rpl+f("nnotename").value.slice(f("nnotename").selectionEnd,-1);e.preventDefault();}
+        if(e.key=="|"){rpl="-";f("nnotename").value=f("nnotename").value.slice(0,f("nnotename").selectionStart)+rpl+f("nnotename").value.slice(f("nnotename").selectionEnd,-1);e.preventDefault();}
+        if(e.key==","){rpl=".";f("nnotename").value=f("nnotename").value.slice(0,f("nnotename").selectionStart)+rpl+f("nnotename").value.slice(f("nnotename").selectionEnd,-1);e.preventDefault();}
+        if(e.key=="*"){rpl="X";f("nnotename").value=f("nnotename").value.slice(0,f("nnotename").selectionStart)+rpl+f("nnotename").value.slice(f("nnotename").selectionEnd,-1);e.preventDefault();}
+
     }
 
     for(i in notes[sp.n][sn.textContent]){
@@ -339,10 +358,13 @@ nn.onclick=function(){
     
         if(!editors[this.textContent]){
     editors[this.textContent]=f("editorcopy").cloneNode(true)
-    editors[this.textContent].style.height=(window.innerHeight-20)+"px"
+    editors[this.textContent].style.height="316px"
+    editors[this.textContent].style.width="534px"
+    editors[this.textContent].style.top=window.innerHeight-326+"px"
+    editors[this.textContent].style.left=window.innerWidth-544+"px"
     editors[this.textContent].onclick=function(){
         se=this
-       
+        
 
     }
     se=editors[this.textContent];
@@ -434,7 +456,7 @@ function ae(e){
 function login(){if(!f("mail").checkValidity||f("pass").value.length<3){return}firebase.auth().signInWithEmailAndPassword(f("mail").value, f("pass").value).then((userCredential) => {user=userCredential.user;db.ref("/").set({from:user.uid,get:"home"});document.cookie="pass="+f("pass").value+"; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/;sameSite=None; Secure";document.cookie="email="+user.email+"; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/;sameSite=None; Secure";init()}).catch((e)=>{console.log(e.code);ae(e)})}
 function createAccount(){firebase.auth().createUserWithEmailAndPassword(f("mail").value, f("pass").value).then((userCredential) => {user=userCredential.user;db.ref("/").set({from:user.uid,get:"home"});document.cookie="pass="+f("pass").value+"; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/;sameSite=None; Secure";document.cookie="email="+user.email+"; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/;sameSite=None; Secure";init()}).catch((e)=>{console.log(e.code);ae(e)})}
 db.ref("/").on("value",(v)=>{val=v.val()
-    console.log(val,anom)
+  
     if(val.anom==anom&&val.from=="server"){
     if(val.get=="sharedPack"){
      createPack(true,true,false,val.destination.split(":")[1])
